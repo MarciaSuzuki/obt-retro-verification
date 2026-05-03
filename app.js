@@ -21,10 +21,10 @@ const STEPS = [
   { id: "setup",  label: "1", name: "Setup Your Verification Session" },
   { id: "study",  label: "2", name: "Study the Meaning Map of the Passage" },
   { id: "whole",  label: "3", name: "Listen to the Audio Draft With the Team" },
-  { id: "scenes", label: "4", name: "Organize Your Props" },
+  { id: "scenes", label: "4", name: "Verify People, Places, Objects and Elements" },
   { id: "match",  label: "5", name: "Match Audio to Meaning" },
   { id: "sweep",  label: "6", name: "Check Unmarked Beads" },
-  { id: "key",    label: "7", name: "Key Terms" },
+  { id: "key",    label: "7", name: "Verify Key Terms" },
   { id: "review", label: "8", name: "Write Your Report" },
 ];
 
@@ -693,8 +693,8 @@ function renderStoryStatus() {
   if (state.metadata.location) parts.push(`Location: ${escapeHtml(state.metadata.location)}`);
   if (state.metadata.organization) parts.push(`Organization: ${escapeHtml(state.metadata.organization)}`);
   if (state.metadata.mentor_id) parts.push(`Mentor: ${escapeHtml(state.metadata.mentor_id)}`);
-  if (state.audioSource.filename) parts.push(`Audio: ${escapeHtml(state.audioSource.filename)}`);
-  if (state.meaningMapFilename) parts.push(`Meaning map: ${escapeHtml(state.meaningMapFilename)}`);
+  if (state.audioSource.filename) parts.push(`Audio: <span class="filename">${escapeHtml(state.audioSource.filename)}</span>`);
+  if (state.meaningMapFilename) parts.push(`Meaning map: <span class="filename">${escapeHtml(state.meaningMapFilename)}</span>`);
   dom.storyStatus.innerHTML = parts.length
     ? parts.map((p) => `<p>${p}</p>`).join("")
     : `<p>Load a meaning map and the translation audio to begin.</p>`;
@@ -875,7 +875,7 @@ function renderSetupScreen() {
         <h3>2 · Meaning map (working language)</h3>
         <p>Upload a consultant-approved meaning map for the passage in JSON format.</p>
         <input type="file" accept="application/json,.json" data-action="upload-meaning-map" />
-        ${state.meaningMap ? `<p>Loaded: <strong>${escapeHtml(state.meaningMapFilename)}</strong> · ${state.meaningMap.length} propositions · ${state.checkablePoints.length} checkable points.</p>` : ""}
+        ${state.meaningMap ? `<p class="loaded-info">Loaded <span class="filename">${escapeHtml(state.meaningMapFilename)}</span> · ${state.meaningMap.length} propositions · ${state.checkablePoints.length} checkable points</p>` : ""}
         <button class="ghost-button" type="button" data-action="load-demo-map">Load Esther 2:19–23 demo</button>
       </div>
 
@@ -883,7 +883,7 @@ function renderSetupScreen() {
         <h3>3 · Translation audio</h3>
         <p>Upload the OBT audio draft to be verified.</p>
         <input type="file" accept="audio/*" data-action="upload-audio" />
-        ${state.audioSource.filename ? `<p>Loaded: <strong>${escapeHtml(state.audioSource.filename)}</strong>${state.audioSource.duration ? ` · ${fmtTime(state.audioSource.duration)}` : ""}.</p>` : ""}
+        ${state.audioSource.filename ? `<p class="loaded-info">Loaded <span class="filename">${escapeHtml(state.audioSource.filename)}</span>${state.audioSource.duration ? ` · ${fmtTime(state.audioSource.duration)}` : ""}</p>` : ""}
         <button class="ghost-button" type="button" data-action="load-demo-audio">Load demo audio</button>
       </div>
 
@@ -897,7 +897,7 @@ function renderSetupScreen() {
           const url = bibleGatewayUrl(state.studyVersions);
           const original = originalLanguageCodeForBook(range.book);
           return `
-            <p>Detected passage: <strong>${escapeHtml(range.display)}</strong></p>
+            <p class="loaded-info">Detected passage <span class="filename">${escapeHtml(range.display)}</span></p>
             <p class="col-helper" style="margin:0">
               The mentor should study carefully the meaning map of the passage before the
               verification session.
@@ -1082,8 +1082,10 @@ function renderWholeStoryScreen() {
         <div>
           <h2 style="margin:0">Listen to the Audio Draft With the Team</h2>
           <p class="col-helper" style="margin:4px 0 0">
-            Have a free conversation with the team about the whole passage. Use the prompts
-            as a guide. Take notes only if something sounds off.
+            Play the whole audio with the team and listen together. Then walk through the
+            prompts below as conversation starters — let the team respond in their own
+            words. Take notes only if something they share or something in the audio
+            sounds off.
           </p>
         </div>
       </header>
@@ -1151,10 +1153,12 @@ function renderScenesReviewScreen() {
     <div class="review-screen">
       <header class="review-screen-head">
         <div>
-          <h2 style="margin:0">Organize Your Props</h2>
+          <h2 style="margin:0">Verify People, Places, Objects and Elements</h2>
           <p class="col-helper" style="margin:4px 0 0">
-            For each scene, talk through the people, places, objects, and what happens.
-            Confirm the team can hear each item. Mark a status for each scene; only write a note if something is off.
+            Play each scene's audio with the team. Ask them to listen carefully and to tell
+            you whenever they hear one of the people, places, objects, or elements listed
+            below — each time the team confirms hearing one, check its box. When the scene
+            has been worked through, mark its status; only write a note if something sounds off.
           </p>
         </div>
         <div class="scene-progress">
@@ -1303,7 +1307,7 @@ function renderKeyTermsScreen() {
     <div class="review-screen">
       <header class="review-screen-head">
         <div>
-          <h2 style="margin:0">Key Terms</h2>
+          <h2 style="margin:0">Verify Key Terms</h2>
           <p class="col-helper" style="margin:4px 0 0">
             Walk through each key term from the meaning map with the team. Confirm that the
             chosen rendering carries the meaning faithfully. Mark a status; only write a note
@@ -1358,6 +1362,12 @@ function renderKeyTermCard(t) {
 function renderMatchScreen() {
   dom.screen.innerHTML = `
     <h2 class="screen-title">Match Audio to Meaning</h2>
+    <p class="col-helper">
+      Play the audio bead by bead with the team. As they identify which proposition a bead
+      — or string of beads — carries, select those beads on the left and tick the matching
+      proposition on the right. The bead turns green when matched. The same beads can
+      match more than one proposition; languages often merge or spread meaning differently.
+    </p>
     ${renderMaquetteCard("use")}
     <div class="work-layout">
       <div class="work-column" id="threadColumn">

@@ -465,6 +465,45 @@ select {
   letter-spacing: -0.005em;
 }
 
+/* ---------- Session-loaded content marker ---------- */
+
+/* Use .loaded-info to mark a paragraph that confirms something the mentor has
+   uploaded into this session (a meaning map, an audio file, an auto-detected
+   passage, etc.). It sits as a soft green strip with a check mark so the
+   mentor can see at a glance what is currently active in the session. */
+.loaded-info {
+  background: var(--status-covered-soft);
+  border: 1px solid transparent;
+  border-left: 3px solid var(--status-covered);
+  border-radius: 8px;
+  padding: var(--space-3) var(--space-4);
+  margin: 0;
+  font-size: var(--type-small);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.loaded-info::before {
+  content: "✓";
+  color: var(--status-covered);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-right: var(--space-2);
+}
+
+/* Filenames and other identifiers loaded into the session. Slightly
+   monospaced so they read as a verifiable identifier rather than prose. */
+.filename {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", monospace;
+  font-size: 0.95em;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  padding: 1px 6px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
 /* ---------- Setup screen ---------- */
 
 /* Single column, comfortably narrow, generous spacing.
