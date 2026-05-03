@@ -1,0 +1,254 @@
+{
+  "metadata": {
+    "map_id": "test_esther_2_19_23_v01",
+    "source_type": "PASTED_PASSAGE",
+    "bcv": "Esther 2:19-23",
+    "reliability_note": "Map produced from pasted English text (NIV). Hebrew was not consulted. For STA Studio testing only."
+  },
+  "classification": {
+    "genre_group": "NARRATIVE",
+    "genre": "HISTORICAL_NARRATIVE",
+    "register": "FORMAL_OFFICIAL",
+    "local_register_shifts": "v.19-20 carry an INTIMATE / family undertone (foster-father instruction, continued obedience). v.21-23 sit firmly in court-official register.",
+    "suggested_tone": "restrained, watchful, procedural",
+    "suggested_pace": "steady, with a slight quickening from discovery to record"
+  },
+  "level_1": {
+    "prose_arc": "The passage moves from a quiet positioning shot into a sudden danger and its swift resolution. The arc traces continued concealment, hidden loyalty, threat to the king, faithful disclosure, public justice, and official record. The burden is the unrecognized faithfulness of two hidden figures whose very hiddenness is what makes the king's rescue possible. The concern is whether loyalty kept in the dark will reach the throne in time and whether it will be remembered.",
+    "context": "The setting is the Persian royal court under King Xerxes. Esther is queen, but her Jewish identity remains hidden by her foster-father's earlier command. Mordecai sits at the king's gate, a position of administrative access close to power, while two royal doorkeepers guard the king's threshold. The reader needs to know that Esther's secrecy is obedience rather than deception, and that Mordecai's saving service here will become structurally important much later in the book.",
+    "emotion_tone": "The dominant tone is restrained and watchful. The opening is quiet, almost domestic, in its memory of a daughter still listening to her foster-father. The middle turns sharp with hidden anger and treachery, and the disclosure is urgent but contained. The closing is procedural, with weight gathering around what is not said aloud — Esther's hidden identity, Mordecai's unrewarded loyalty, the king's narrow escape — rather than around any expressed emotion.",
+    "communicative_function": "The passage transmits a community memory and plants a debt that the larger narrative will later require the king to repay. It records a saved life, names the source of that saving, and enters the event into royal memory. It also shows hidden faithfulness operating inside an empire that does not know it is being served. Speaking the passage rehearses providential timing: a foster-father's silent obedience, a queen's quiet voice, and a chronicle that does not yet know its own importance."
+  },
+  "concept_bank": [
+    { "term": "King's gate", "note": "Administrative and judicial position; not merely a doorway. Needs controlled rendering so the listener understands Mordecai is in a place of access, not idle." },
+    { "term": "Second gathering of virgins", "note": "A court custom whose internal logic is not explained; will need a controlled handling that does not invent reasons." },
+    { "term": "Family background and nationality (her people and kindred)", "note": "Esther's Jewish identity; the very thing concealed; carries covenantal weight that the passage does not name aloud." },
+    { "term": "King's officers / eunuchs guarding the doorway", "note": "Persian palace role; some translations render as 'eunuchs', others as 'officers'; needs target-language controlled rendering." },
+    { "term": "Conspire to lay hand on the king", "note": "Biblical idiom in many sources for assassination; this rendering says 'assassinate' directly. May need flagging if the source-language form is more idiomatic." },
+    { "term": "Impaling on poles / hanging on a tree", "note": "Persian execution; the image and its meaning both need controlled handling." },
+    { "term": "Book of the annals / chronicles", "note": "Institution of royal memory; this is the same record that becomes structurally important in Esther 6." }
+  ],
+  "scenes": [
+    {
+      "scene": 1,
+      "title": "Mordecai at the gate, Esther's continued obedience",
+      "range": "v.19-20",
+      "people": [
+        { "name": "Mordecai", "role": "positioned at the king's gate", "relationship": "Esther's adoptive guardian and cousin, Jew within Persian court", "wants": "to remain near power and watch over Esther", "carries": "hidden Jewish identity, guardian responsibility" },
+        { "name": "Esther", "role": "queen who continues to obey her foster-father", "relationship": "queen of Persia, Mordecai's adopted daughter and cousin", "wants": "to keep her identity hidden as instructed", "carries": "hidden Jewish identity, divided loyalty between palace and family" },
+        { "name": "The virgins", "role": "women gathered a second time", "relationship": "candidates from the earlier court process, now reassembled", "wants": "not foregrounded", "carries": "presence that frames the timing of the scene" },
+        { "name": "King Xerxes (referenced, not present)", "role": "ruler in whose court the gathering takes place", "relationship": "king of Persia, Esther's husband", "wants": "not foregrounded here", "carries": "imperial authority that shapes the conditions of secrecy" }
+      ],
+      "places": [
+        { "name": "King's gate", "role": "Mordecai's positioning point", "type": "administrative threshold of the palace", "meaning": "place of access, judgment, and royal business", "effect_on_scene": "places Mordecai near information and protection" },
+        { "name": "Royal court (implied)", "role": "setting for the assembly and for Esther's life", "type": "imperial residence", "meaning": "foreign seat of power", "effect_on_scene": "holds the conditions of secrecy that shape Esther's obedience" }
+      ],
+      "objects": [
+        { "name": "Second gathering of virgins", "what_it_is": "a second assembly of young women at court", "function_in_scene": "time-marker for Mordecai's positioning", "signals": "continuation of a court procedure already established earlier in the book" },
+        { "name": "Esther's family background and nationality", "what_it_is": "her Jewish kin and people", "function_in_scene": "information actively kept silent", "signals": "ongoing concealment by command" },
+        { "name": "Mordecai's earlier instruction (referenced)", "what_it_is": "standing instruction given to Esther", "function_in_scene": "source of her continued behavior", "signals": "continuity of authority from upbringing into queenship" },
+        { "name": "Esther's upbringing under Mordecai (referenced)", "what_it_is": "the period when Mordecai raised her", "function_in_scene": "precedent that frames her present obedience", "signals": "that her present silence is part of a long-formed habit" }
+      ],
+      "what_happens": "Mordecai sits at the king's gate while Esther continues to keep her family and people hidden, as Mordecai had instructed.",
+      "communicative_purpose": "Establishes positions and continuing concealment.",
+      "significant_absence": "No one in the court knows Esther is Jewish.",
+      "propositions": [1, 2, 3]
+    },
+    {
+      "scene": 2,
+      "title": "The conspiracy",
+      "range": "v.21",
+      "people": [
+        { "name": "Mordecai", "role": "still positioned at the gate", "relationship": "kinsman of the queen, Jew unknown to court", "wants": "to remain watchful", "carries": "hidden identity, hearing distance to court business" },
+        { "name": "Bigthana", "role": "doorkeeper turned conspirator", "relationship": "king's officer with access to the king's threshold", "wants": "harm to the king", "carries": "angered loyalty, position of trust" },
+        { "name": "Teresh", "role": "doorkeeper turned conspirator", "relationship": "king's officer with access to the king's threshold", "wants": "harm to the king", "carries": "angered loyalty, position of trust" },
+        { "name": "King Xerxes", "role": "target of the plot", "relationship": "ruler whom the conspirators serve", "wants": "not foregrounded in this scene", "carries": "imperial life made vulnerable through trusted servants" }
+      ],
+      "places": [
+        { "name": "King's gate", "role": "Mordecai's listening post", "type": "administrative threshold of the palace", "meaning": "place where information passes", "effect_on_scene": "enables Mordecai to overhear plotted treason" },
+        { "name": "Doorway (referenced)", "role": "post the conspirators guarded", "type": "protected entry to the king's quarters", "meaning": "point of access whose betrayal is most dangerous", "effect_on_scene": "explains how the conspirators would have opportunity" }
+      ],
+      "objects": [
+        { "name": "Anger of the two officers", "what_it_is": "an unstated grievance against the king", "function_in_scene": "motive of the plot", "signals": "that loyalty inside the palace is breakable" },
+        { "name": "Conspiracy / plot", "what_it_is": "a secret plan to kill the king", "function_in_scene": "the threat the passage turns on", "signals": "hidden danger to the throne" }
+      ],
+      "what_happens": "Two royal doorkeepers, angered with the king, plot together to assassinate him.",
+      "communicative_purpose": "Introduces hidden treason against the king.",
+      "propositions": [4]
+    },
+    {
+      "scene": 3,
+      "title": "Discovery and disclosure",
+      "range": "v.22",
+      "people": [
+        { "name": "Mordecai", "role": "discoverer of the plot", "relationship": "kinsman to the queen", "wants": "to protect the king through the queen", "carries": "knowledge that must be moved upward" },
+        { "name": "Esther", "role": "messenger from Mordecai to the king", "relationship": "queen, Mordecai's adopted daughter", "wants": "to relay the warning faithfully and credit its source", "carries": "queenly access, family loyalty" },
+        { "name": "King Xerxes", "role": "recipient of the warning", "relationship": "ruler, Esther's husband", "wants": "to know of threats against him", "carries": "vulnerability now answered by warning" }
+      ],
+      "places": [
+        { "name": "King's gate (implied)", "role": "where Mordecai gathers the information", "type": "administrative threshold", "meaning": "place of access", "effect_on_scene": "continues to function as listening post" },
+        { "name": "Palace interior (implied)", "role": "where Esther speaks to the king", "type": "royal living quarters", "meaning": "place of intimate access to the throne", "effect_on_scene": "enables direct queen-to-king disclosure" }
+      ],
+      "objects": [
+        { "name": "Knowledge of the plot", "what_it_is": "information about the planned assassination", "function_in_scene": "content moved through a chain of disclosure", "signals": "the path from gate to queen to king" },
+        { "name": "Credit given to Mordecai", "what_it_is": "Esther's naming of Mordecai as the source", "function_in_scene": "links the saving information to a specific person", "signals": "that this loyalty is on record from this moment" }
+      ],
+      "what_happens": "Mordecai learns of the plot and reports it through Esther, who tells the king and names Mordecai as the source.",
+      "communicative_purpose": "Warning reaches the king through faithful disclosure.",
+      "propositions": [5, 6, 7]
+    },
+    {
+      "scene": 4,
+      "title": "Investigation, execution, record",
+      "range": "v.23",
+      "people": [
+        { "name": "King Xerxes", "role": "authority who orders investigation and punishment", "relationship": "ruler whose life was threatened", "wants": "to verify and answer the threat", "carries": "judicial authority" },
+        { "name": "Investigators (implied, unnamed)", "role": "those who check the report", "relationship": "royal officials", "wants": "role-relative — to determine truth of the report", "carries": "role-relative — delegated judicial function" },
+        { "name": "Bigthana and Teresh", "role": "judged conspirators", "relationship": "former king's officers", "wants": "not foregrounded", "carries": "guilt, exposure" },
+        { "name": "Royal scribe / record-keeper (implied)", "role": "the one who writes the event into the annals", "relationship": "official of the court", "wants": "role-relative — to enter the event into royal memory", "carries": "role-relative — responsibility for official memory" },
+        { "name": "Mordecai (referenced, not present)", "role": "source of the saving information", "relationship": "queen's adoptive father", "wants": "not foregrounded", "carries": "loyalty now entered into the record but not yet rewarded" }
+      ],
+      "places": [
+        { "name": "Place of execution (implied)", "role": "site of the impaling", "type": "public space of judicial death", "meaning": "visible end of treason", "effect_on_scene": "enacts royal justice in view" },
+        { "name": "Royal court (implied)", "role": "place where the annals are kept and read", "type": "ceremonial center of the empire", "meaning": "site of imperial memory", "effect_on_scene": "enables the recording to occur in the king's presence" },
+        { "name": "Book of the annals", "role": "depository of recorded events", "type": "official chronicle", "meaning": "memory-keeping instrument of the empire", "effect_on_scene": "preserves the saved-life event for later remembrance" }
+      ],
+      "objects": [
+        { "name": "Investigation", "what_it_is": "a check of the report's truth", "function_in_scene": "confirms the warning", "signals": "due process inside the empire" },
+        { "name": "Poles for impaling", "what_it_is": "instruments of capital punishment", "function_in_scene": "means of executing the conspirators", "signals": "severity of treason" },
+        { "name": "Book of the annals", "what_it_is": "official royal chronicle", "function_in_scene": "vessel that records the event", "signals": "memory that may later be consulted" },
+        { "name": "Presence of the king at the recording", "what_it_is": "the king's witnessing of the entry", "function_in_scene": "anchors the recording inside royal authority", "signals": "that the saved-life event is part of royal record" },
+        { "name": "Reward for Mordecai (absent)", "what_it_is": "an honor or reward expected after such service", "function_in_scene": "not given", "signals": "a debt left unpaid that the larger narrative will later remember" }
+      ],
+      "what_happens": "The report is investigated and confirmed; the two officials are impaled, and the event is recorded in the royal annals in the king's presence.",
+      "communicative_purpose": "Records the saved-life event in royal memory.",
+      "significant_absence": "No reward is given to Mordecai.",
+      "propositions": [8, 9, 10]
+    }
+  ],
+  "propositions": [
+    {
+      "proposition": 1,
+      "reference": "Esther 2:19",
+      "summary": "positioning",
+      "questions": [
+        {"q": "What happened?", "a": "positioning"},
+        {"q": "Who was positioned?", "a": "Mordecai"},
+        {"q": "Where positioned?", "a": "king's gate"},
+        {"q": "When?", "a": "at a second gathering"},
+        {"q": "Gathering of whom?", "a": "the virgins"},
+        {"q": "Which gathering?", "a": "the second one"}
+      ]
+    },
+    {
+      "proposition": 2,
+      "reference": "Esther 2:20a",
+      "summary": "continued concealment",
+      "questions": [
+        {"q": "What happened?", "a": "continued concealment"},
+        {"q": "Who concealed?", "a": "Esther"},
+        {"q": "Concealed what?", "a": "family background"},
+        {"q": "Concealed what else?", "a": "nationality"},
+        {"q": "According to what?", "a": "prior instruction"},
+        {"q": "Who instructed?", "a": "Mordecai"},
+        {"q": "Whom instructed?", "a": "Esther"}
+      ]
+    },
+    {
+      "proposition": 3,
+      "reference": "Esther 2:20b",
+      "summary": "continued obedience",
+      "questions": [
+        {"q": "What happened?", "a": "continued obedience"},
+        {"q": "Who obeyed?", "a": "Esther"},
+        {"q": "Obeyed whom?", "a": "Mordecai"},
+        {"q": "Obeyed in what?", "a": "his instructions"},
+        {"q": "For how long?", "a": "as in upbringing"},
+        {"q": "Who raised her?", "a": "Mordecai"}
+      ]
+    },
+    {
+      "proposition": 4,
+      "reference": "Esther 2:21",
+      "summary": "conspiracy",
+      "questions": [
+        {"q": "What happened?", "a": "conspiracy"},
+        {"q": "Time setting?", "a": "Mordecai still at the gate"},
+        {"q": "Who conspired?", "a": "Bigthana"},
+        {"q": "Who else?", "a": "Teresh"},
+        {"q": "How many?", "a": "two"},
+        {"q": "Their role?", "a": "king's officers"},
+        {"q": "Their post?", "a": "guardians of the doorway"},
+        {"q": "Their state?", "a": "angered"},
+        {"q": "Plot was what?", "a": "assassination"},
+        {"q": "Of whom?", "a": "King Xerxes"}
+      ]
+    },
+    {
+      "proposition": 5,
+      "reference": "Esther 2:22a",
+      "summary": "discovery",
+      "questions": [
+        {"q": "What happened?", "a": "discovery"},
+        {"q": "Who learned?", "a": "Mordecai"},
+        {"q": "Learned what?", "a": "the plot"}
+      ]
+    },
+    {
+      "proposition": 6,
+      "reference": "Esther 2:22b",
+      "summary": "reporting",
+      "questions": [
+        {"q": "What happened?", "a": "reporting"},
+        {"q": "Who reported?", "a": "Mordecai"},
+        {"q": "To whom?", "a": "Queen Esther"},
+        {"q": "Reported what?", "a": "the plot"}
+      ]
+    },
+    {
+      "proposition": 7,
+      "reference": "Esther 2:22c",
+      "summary": "further reporting",
+      "questions": [
+        {"q": "What happened?", "a": "further reporting"},
+        {"q": "Who reported?", "a": "Esther"},
+        {"q": "To whom?", "a": "the king"},
+        {"q": "Reported what?", "a": "the plot"},
+        {"q": "In whose name?", "a": "Mordecai's"}
+      ]
+    },
+    {
+      "proposition": 8,
+      "reference": "Esther 2:23a",
+      "summary": "investigation",
+      "questions": [
+        {"q": "What happened?", "a": "investigation"},
+        {"q": "Investigated what?", "a": "the report"},
+        {"q": "With what result?", "a": "found true"}
+      ]
+    },
+    {
+      "proposition": 9,
+      "reference": "Esther 2:23b",
+      "summary": "execution",
+      "questions": [
+        {"q": "What happened?", "a": "execution"},
+        {"q": "Who was executed?", "a": "the two officials"},
+        {"q": "How many?", "a": "two"},
+        {"q": "Means?", "a": "impaling"},
+        {"q": "On what?", "a": "poles"}
+      ]
+    },
+    {
+      "proposition": 10,
+      "reference": "Esther 2:23c",
+      "summary": "recording",
+      "questions": [
+        {"q": "What happened?", "a": "recording"},
+        {"q": "Recorded what?", "a": "this event"},
+        {"q": "Recorded where?", "a": "book of the annals"},
+        {"q": "In whose presence?", "a": "the king"}
+      ]
+    }
+  ]
+}

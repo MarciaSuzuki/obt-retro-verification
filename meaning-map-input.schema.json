@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tripod.example.org/oral-retro-verification/meaning-map-input.schema.json",
+  "title": "OBT Retro-Verification Meaning Map Input",
+  "description": "Working-language meaning map consumed by the OBT Retro-Verification app. Accepts either a flat array of propositions, or an object that adds Level-1 prose and Level-2 scenes.",
+  "oneOf": [
+    {
+      "type": "array",
+      "items": { "$ref": "#/$defs/proposition" }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["propositions"],
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Free-form metadata (map_id, source_type, bcv, reliability_note). Not consumed for verification logic; can be surfaced on the Study screen later."
+        },
+        "classification": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Free-form classification (genre_group, genre, register, suggested_tone, etc.). Not consumed for verification logic."
+        },
+        "level_1": { "$ref": "#/$defs/level1" },
+        "scenes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/scene" }
+        },
+        "propositions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/proposition" }
+        },
+        "concept_bank": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conceptBankItem" }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "level1": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Whole-passage interpretation. Both the rich (PDF) names and the short Easy-Beads names are accepted; the app renders whichever fields are present.",
+      "properties": {
+        "prose_arc": { "type": "string" },
+        "context": { "type": "string" },
+        "emotion_tone": { "type": "string" },
+        "communicative_function": { "type": "string" },
+        "what_the_story_is_about_and_its_shape": { "type": "string" },
+        "where_and_when": { "type": "string" },
+        "feeling_of_the_story": { "type": "string" },
+        "why_being_told": { "type": "string" }
+      }
+    },
+    "proposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proposition", "questions"],
+      "properties": {
+        "proposition": { "type": "integer", "minimum": 1 },
+        "reference": { "type": "string" },
+        "summary": { "type": "string" },
+        "questions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/qaRow" }
+        }
+      }
+    },
+    "qaRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["q", "a"],
+      "properties": {
+        "q": { "type": "string" },
+        "a": { "type": "string" }
+      }
+    },
+    "scene": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scene", "propositions"],
+      "properties": {
+        "scene": { "type": "integer", "minimum": 1 },
+        "title": { "type": "string" },
+        "range": { "type": "string" },
+        "summary": { "type": "string" },
+        "people": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/scenePerson" }
+        },
+        "places": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/scenePlace" }
+        },
+        "objects": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/sceneObject" }
+        },
+        "what_happens": { "type": "string" },
+        "communicative_purpose": { "type": "string" },
+        "significant_absence": { "type": "string" },
+        "propositions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "integer", "minimum": 1 }
+        }
+      }
+    },
+    "scenePerson": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "relationship": { "type": "string" },
+        "wants": { "type": "string" },
+        "carries": { "type": "string" }
+      }
+    },
+    "scenePlace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "type": { "type": "string" },
+        "meaning": { "type": "string" },
+        "effect_on_scene": { "type": "string" }
+      }
+    },
+    "sceneObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "what_it_is": { "type": "string" },
+        "function_in_scene": { "type": "string" },
+        "signals": { "type": "string" }
+      }
+    },
+    "conceptBankItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["term"],
+      "properties": {
+        "term": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tripod.example.org/oral-retro-verification/verification-report.schema.json",
+  "title": "Oral Retro-Verification Report",
+  "description": "JSON exported by the Oral Retro-Verification app at the end of a verification session.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "session_metadata",
+    "source_meaning_map_ref",
+    "english_versions_used",
+    "translation_audio",
+    "checkable_points",
+    "links",
+    "bead_tags",
+    "level_1_review",
+    "level_2_review",
+    "coverage_summary",
+    "mentor_overall_note",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": { "const": "TRIPOD_RETRO_VERIFICATION_REPORT_V1" },
+    "session_metadata": { "$ref": "#/$defs/sessionMetadata" },
+    "source_meaning_map_ref": { "$ref": "#/$defs/mapRef" },
+    "english_versions_used": { "type": "array", "items": { "type": "string" } },
+    "translation_audio": { "$ref": "#/$defs/audioRef" },
+    "checkable_points": { "type": "array", "items": { "$ref": "#/$defs/checkablePoint" } },
+    "links": { "type": "array", "items": { "$ref": "#/$defs/link" } },
+    "bead_tags": { "type": "array", "items": { "$ref": "#/$defs/beadTag" } },
+    "level_1_review": { "$ref": "#/$defs/level1Review" },
+    "level_2_review": { "$ref": "#/$defs/level2Review" },
+    "coverage_summary": { "$ref": "#/$defs/coverageSummary" },
+    "mentor_overall_note": { "type": "string" },
+    "provenance": { "$ref": "#/$defs/provenance" }
+  },
+  "$defs": {
+    "sessionMetadata": {
+      "type": "object",
+      "properties": {
+        "mentor_id": { "type": "string" },
+        "team_present": { "type": "string" },
+        "project_title": { "type": "string" },
+        "translation_language": { "type": "string" },
+        "community": { "type": "string" },
+        "started_at": { "type": "string" },
+        "completed_at": { "type": "string" }
+      }
+    },
+    "mapRef": {
+      "type": "object",
+      "properties": {
+        "filename": { "type": "string" },
+        "hash": { "type": "string" },
+        "proposition_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "audioRef": {
+      "type": "object",
+      "properties": {
+        "filename": { "type": "string" },
+        "duration_sec": { "type": "number", "minimum": 0 },
+        "bead_granularity": { "enum": ["coarse", "medium", "fine"] },
+        "bead_count": { "type": "integer", "minimum": 0 },
+        "acoustemes_loaded": { "type": "boolean" }
+      }
+    },
+    "checkablePoint": {
+      "type": "object",
+      "required": ["id", "level", "proposition", "text"],
+      "properties": {
+        "id": { "type": "string" },
+        "level": { "enum": ["proposition", "qa"] },
+        "proposition": { "type": "integer", "minimum": 1 },
+        "qIndex": { "type": "integer" },
+        "ref": { "type": "string" },
+        "text": { "type": "string" }
+      }
+    },
+    "link": {
+      "type": "object",
+      "required": [
+        "id", "point_id",
+        "start_bead_index", "end_bead_index",
+        "audio_start_sec", "audio_end_sec"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "point_id": { "type": "string" },
+        "start_bead_index": { "type": "integer", "minimum": 0 },
+        "end_bead_index": { "type": "integer", "minimum": 0 },
+        "audio_start_sec": { "type": "number", "minimum": 0 },
+        "audio_end_sec": { "type": "number", "minimum": 0 },
+        "note": { "type": "string" }
+      }
+    },
+    "beadTag": {
+      "type": "object",
+      "required": ["id", "start_bead_index", "end_bead_index", "tag"],
+      "properties": {
+        "id": { "type": "string" },
+        "start_bead_index": { "type": "integer", "minimum": 0 },
+        "end_bead_index": { "type": "integer", "minimum": 0 },
+        "tag": { "enum": ["framing", "added", "altered"] },
+        "note": { "type": "string" }
+      }
+    },
+    "checkList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "checked"],
+        "properties": {
+          "name": { "type": "string" },
+          "checked": { "type": "boolean" }
+        }
+      }
+    },
+    "level1Review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "notes": { "type": "string" },
+        "revision": { "enum": ["none", "minor", "major"] },
+        "revision_comment": { "type": "string" }
+      }
+    },
+    "level2Review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scenes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "scene": { "type": "integer", "minimum": 1 },
+              "title": { "type": "string" },
+              "status": { "enum": ["pending", "ok", "off"] },
+              "note": { "type": "string" },
+              "significant_absence": { "type": "string" },
+              "absence_confirmed": { "type": "boolean" },
+              "absence_note": { "type": "string" },
+              "people_checked": { "$ref": "#/$defs/checkList" },
+              "places_checked": { "$ref": "#/$defs/checkList" },
+              "objects_checked": { "$ref": "#/$defs/checkList" }
+            }
+          }
+        }
+      }
+    },
+    "coverageSummary": {
+      "type": "object",
+      "required": [
+        "points_total", "points_anchored", "points_unanchored",
+        "beads_total", "beads_covered", "beads_framing",
+        "beads_added", "beads_altered", "beads_unclassified"
+      ],
+      "properties": {
+        "points_total": { "type": "integer", "minimum": 0 },
+        "points_anchored": { "type": "integer", "minimum": 0 },
+        "points_unanchored": { "type": "integer", "minimum": 0 },
+        "beads_total": { "type": "integer", "minimum": 0 },
+        "beads_covered": { "type": "integer", "minimum": 0 },
+        "beads_framing": { "type": "integer", "minimum": 0 },
+        "beads_added": { "type": "integer", "minimum": 0 },
+        "beads_altered": { "type": "integer", "minimum": 0 },
+        "beads_unclassified": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "mentor_id": { "type": "string" },
+        "team_present": { "type": "string" },
+        "started_at": { "type": "string" },
+        "completed_at": { "type": "string" },
+        "tool": { "type": "string" }
+      }
+    }
+  }
+}
