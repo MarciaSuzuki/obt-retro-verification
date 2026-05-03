@@ -1690,9 +1690,17 @@ select {
   align-items: center;
   gap: var(--space-3);
   flex-wrap: wrap;
-  margin-top: var(--space-4);
+  margin-top: var(--space-5);
   padding-top: var(--space-5);
   border-top: 1px solid var(--line);
+}
+
+/* Setup screen footer reuses the centred max-width of the setup grid so the
+   Continue button lines up with the cards above. */
+.setup-footer {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Verification maquette intro card (used in Step 4 and Step 5) */

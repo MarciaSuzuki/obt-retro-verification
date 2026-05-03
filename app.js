@@ -105,7 +105,6 @@ const dom = {
   playToggle: document.getElementById("playToggleButton"),
   backward: document.getElementById("backwardButton"),
   forward: document.getElementById("forwardButton"),
-  playRange: document.getElementById("playRangeButton"),
   audioTitle: document.getElementById("audioTitle"),
   audioBeadTimeline: document.getElementById("audioBeadTimeline"),
   currentTimeLabel: document.getElementById("currentTimeLabel"),
@@ -733,7 +732,6 @@ function renderAudioDock() {
   dom.playToggle.disabled = !hasAudio;
   dom.backward.disabled = !hasAudio;
   dom.forward.disabled = !hasAudio;
-  dom.playRange.disabled = !hasAudio || !state.selection;
   dom.audioTitle.textContent = state.audioSource.filename || "Choose a recording to begin.";
   dom.durationLabel.textContent = fmtTime(state.audioSource.duration);
   dom.currentTimeLabel.textContent = fmtTime(dom.audioElement.currentTime || 0);
@@ -887,36 +885,11 @@ function renderSetupScreen() {
         <button class="ghost-button" type="button" data-action="load-demo-audio">Load demo audio</button>
       </div>
 
-      <div class="setup-card">
-        <h3>4 · Study the passage</h3>
-        ${(() => {
-          const range = passageRangeFromMap();
-          if (!range) {
-            return `<p><em>Load a meaning map first to enable Bible Gateway links.</em></p>`;
-          }
-          const url = bibleGatewayUrl(state.studyVersions);
-          const original = originalLanguageCodeForBook(range.book);
-          return `
-            <p class="loaded-info">Detected passage <span class="filename">${escapeHtml(range.display)}</span></p>
-            <p class="col-helper" style="margin:0">
-              The mentor should study carefully the meaning map of the passage before the
-              verification session.
-            </p>
-            <div class="field">
-              <label>Versions to compare (comma-separated, Bible Gateway codes)</label>
-              <input type="text" class="study-versions-input" data-action="study-versions"
-                     value="${escapeHtml(state.studyVersions)}" placeholder="NIV,ESV,NLT" />
-            </div>
-            <p class="col-helper" style="margin:0">
-              The original-language column (<strong>${escapeHtml(original)}</strong> —
-              ${original === "SBLGNT" ? "Greek NT" : "Hebrew OT"}) is added automatically.
-            </p>
-            <div class="study-actions">
-              <a href="${url}" target="_blank" rel="noopener">Open in Bible Gateway (parallel)</a>
-            </div>
-          `;
-        })()}
-      </div>
+    </div>
+    <div class="screen-footer setup-footer">
+      <span></span>
+      <button class="primary-button" type="button" data-action="step" data-step="study"
+        ${state.meaningMap ? "" : "disabled"}>Continue to Study →</button>
     </div>
   `;
 }
@@ -940,13 +913,12 @@ function renderStudyScreen() {
         <div class="study-actions">
           ${url ? `<a href="${url}" target="_blank" rel="noopener">Open Bible Gateway in new tab</a>` : ""}
           ${url ? `<button type="button" class="ghost-button" data-action="open-bible-side">Open in side window</button>` : ""}
-          <button type="button" class="primary-button" data-action="go-match"
-            ${state.audioSource.url && state.beads.length ? "" : "disabled"}>Begin matching →</button>
         </div>
       </div>
       <p class="col-helper">
-        Read the meaning map together with the Bible Gateway versions side by side.
-        Use <em>Open in side window</em> for a smaller window you can place next to this one.
+        Before the verification session, the mentor should study the meaning map of the
+        passage carefully. Read it together with the Bible Gateway versions side by side —
+        use <em>Open in side window</em> for a smaller window you can place next to this one.
       </p>
 
       <div class="study-layout study-layout-single">
@@ -954,6 +926,11 @@ function renderStudyScreen() {
           <h3 class="study-section-head">Meaning map</h3>
           ${renderReadableMap()}
         </div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="ghost-button" type="button" data-action="step" data-step="setup">← Back to Setup</button>
+        <button class="primary-button" type="button" data-action="step" data-step="whole">Continue to Whole Story →</button>
       </div>
     </div>
   `;
@@ -1386,6 +1363,11 @@ function renderMatchScreen() {
         ${renderScenesColumn()}
       </div>
     </div>
+
+    <div class="screen-footer">
+      <button class="ghost-button" type="button" data-action="step" data-step="scenes">← Back to Scenes</button>
+      <button class="primary-button" type="button" data-action="step" data-step="sweep">Continue to Unmarked Beads →</button>
+    </div>
   `;
   renderBeadThread();
 }
@@ -1636,6 +1618,11 @@ function renderSweepScreen() {
         `).join("")}
       </div>
     ` : ""}
+
+    <div class="screen-footer">
+      <button class="ghost-button" type="button" data-action="step" data-step="match">← Back to Match</button>
+      <button class="primary-button" type="button" data-action="step" data-step="key">Continue to Key Terms →</button>
+    </div>
   `;
 }
 
@@ -1694,6 +1681,11 @@ function renderReviewScreen() {
     <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="primary-button" type="button" data-action="export-json">Download JSON report</button>
       <button class="ghost-button" type="button" data-action="export-html">Download printable HTML report</button>
+    </div>
+
+    <div class="screen-footer">
+      <button class="ghost-button" type="button" data-action="step" data-step="key">← Back to Key Terms</button>
+      <span></span>
     </div>
   `;
   document.getElementById("mentorOverallNote").addEventListener("input", (e) => {
@@ -1974,7 +1966,6 @@ document.addEventListener("mouseout", (e) => {
 dom.playToggle.addEventListener("click", togglePlayback);
 dom.backward.addEventListener("click", () => seekRelative(-5));
 dom.forward.addEventListener("click", () => seekRelative(5));
-dom.playRange.addEventListener("click", playSelection);
 dom.audioElement.addEventListener("timeupdate", () => {
   dom.currentTimeLabel.textContent = fmtTime(dom.audioElement.currentTime);
   renderAudioProgressBeads();
