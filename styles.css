@@ -758,6 +758,101 @@ select {
   background: var(--surface);
 }
 
+/* Figure / Idiom flag cards (Step 7, after Key Terms) */
+.figure-flag-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: var(--space-5);
+  display: grid;
+  gap: var(--space-3);
+  border-left-width: 3px;
+  border-left-color: var(--line-strong);
+}
+
+.figure-flag-card + .figure-flag-card {
+  margin-top: var(--space-4);
+}
+
+.figure-flag-card.is-pending { border-left-color: var(--line-strong); }
+.figure-flag-card.is-ok { border-left-color: var(--status-covered); }
+.figure-flag-card.is-off { border-left-color: var(--status-unclassified); }
+
+.figure-flag-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.figure-flag-head strong {
+  font-size: var(--type-h3);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.keep-image-badge {
+  font-size: var(--type-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-soft);
+  background: transparent;
+}
+
+.keep-image-badge.keep-required {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--surface);
+}
+
+.keep-image-badge.keep-preferred {
+  border-color: var(--accent-soft);
+  color: var(--accent);
+}
+
+.keep-image-badge.keep-optional {
+  border-color: var(--line-strong);
+  color: var(--ink-fade);
+}
+
+.keep-image-badge.keep-avoid {
+  background: var(--status-added);
+  border-color: var(--status-added);
+  color: var(--surface);
+}
+
+.figure-flag-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) 2.5fr;
+  gap: var(--space-4);
+  align-items: baseline;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.figure-flag-row:last-of-type {
+  border-bottom: none;
+}
+
+.figure-flag-row dt {
+  margin: 0;
+  font-size: var(--type-label);
+  color: var(--ink-fade);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+.figure-flag-row dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--type-small);
+  line-height: 1.55;
+}
+
 /* Add a pill colour for the "concern" status used on the Key Terms screen
    (mirrors the ok / off / pending palette in status-row). */
 .status-row label:has(input[value="concern"]:checked) {

@@ -28,6 +28,36 @@
     { "term": "Impaling on poles / hanging on a tree", "note": "Persian execution; the image and its meaning both need controlled handling." },
     { "term": "Book of the annals / chronicles", "note": "Institution of royal memory; this is the same record that becomes structurally important in Esther 6." }
   ],
+  "figure_flags": [
+    {
+      "figure": "Sitting at the king's gate",
+      "surface_image": "physical posture at a doorway",
+      "intended_meaning": "serving in a royal/administrative position with access to information and judgment",
+      "keep_image": "PREFERRED",
+      "review_note": "Many target cultures will need help understanding that this is a position, not idle sitting."
+    },
+    {
+      "figure": "In Mordecai's name / giving credit to Mordecai",
+      "surface_image": "speaking by means of a name",
+      "intended_meaning": "attributing the source of the information; placing Mordecai on record",
+      "keep_image": "OPTIONAL",
+      "review_note": "Target language may have its own attribution form."
+    },
+    {
+      "figure": "Impaled on poles (or hanged on a tree)",
+      "surface_image": "bodies displayed on wooden poles",
+      "intended_meaning": "capital execution under Persian practice",
+      "keep_image": "PREFERRED",
+      "review_note": "May need a brief cultural footing to land correctly."
+    },
+    {
+      "figure": "Became angry and conspired",
+      "surface_image": "a turn of feeling that produces a hidden plan",
+      "intended_meaning": "motive without specific cause; the passage withholds the reason",
+      "keep_image": "OPTIONAL",
+      "review_note": "Do not invent a motive."
+    }
+  ],
   "scenes": [
     {
       "scene": 1,

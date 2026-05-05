@@ -51,6 +51,7 @@ const state = {
   scenes: [], // optional Level-2 scenes from rich input shape
   level1: null, // optional Level-1 whole-passage interpretation
   conceptBank: [], // optional Concept-Bank items (Key Terms step 7)
+  figureFlags: [], // optional Figure / Idiom flags (Key Terms step 7)
   meaningMapFilename: "",
   meaningMapHash: "",
   audioSource: { filename: "", url: "", duration: 0 },
@@ -71,6 +72,9 @@ const state = {
   // Key Terms review (per concept-bank item). Keyed by term string.
   // Each entry: { status: "pending"|"ok"|"concern", note }
   keyTermsReview: {},
+  // Figure flag review. Keyed by figure string.
+  // Each entry: { status: "pending"|"ok"|"concern", note }
+  figureFlagsReview: {},
   mentorOverallNote: "",
   // Session
   metadata: {
@@ -238,7 +242,7 @@ function updateOpenPassageBtn() {
 //  - an object {scenes: [...], propositions: [...]} (rich shape with Level 2).
 function parseMeaningMap(parsed) {
   if (Array.isArray(parsed)) {
-    return { propositions: parsed, scenes: [], level1: null, conceptBank: [] };
+    return { propositions: parsed, scenes: [], level1: null, conceptBank: [], figureFlags: [] };
   }
   if (parsed && typeof parsed === "object" && Array.isArray(parsed.propositions)) {
     return {
@@ -246,6 +250,7 @@ function parseMeaningMap(parsed) {
       scenes: Array.isArray(parsed.scenes) ? parsed.scenes : [],
       level1: (parsed.level_1 && typeof parsed.level_1 === "object") ? parsed.level_1 : null,
       conceptBank: Array.isArray(parsed.concept_bank) ? parsed.concept_bank : [],
+      figureFlags: Array.isArray(parsed.figure_flags) ? parsed.figure_flags : [],
     };
   }
   throw new Error("Meaning map must be a JSON array, or an object with a 'propositions' array.");
@@ -511,9 +516,11 @@ function persistSession() {
       scenes: state.scenes,
       level1: state.level1,
       conceptBank: state.conceptBank,
+      figureFlags: state.figureFlags,
       level1Review: state.level1Review,
       level2Review: state.level2Review,
       keyTermsReview: state.keyTermsReview,
+      figureFlagsReview: state.figureFlagsReview,
       meaningMapFilename: state.meaningMapFilename,
       meaningMapHash: state.meaningMapHash,
       audioSource: { filename: state.audioSource.filename, duration: state.audioSource.duration },
@@ -547,9 +554,11 @@ function restoreSession() {
       scenes: snap.scenes || [],
       level1: snap.level1 || null,
       conceptBank: snap.conceptBank || [],
+      figureFlags: snap.figureFlags || [],
       level1Review: snap.level1Review || { notes: "", revision: "none", revision_comment: "" },
       level2Review: snap.level2Review || {},
       keyTermsReview: snap.keyTermsReview || {},
+      figureFlagsReview: snap.figureFlagsReview || {},
       meaningMapFilename: snap.meaningMapFilename || "",
       meaningMapHash: snap.meaningMapHash || "",
       audioSource: { filename: snap.audioSource?.filename || "", url: "", duration: snap.audioSource?.duration || 0 },
@@ -874,7 +883,10 @@ function renderSetupScreen() {
         <p>Upload a consultant-approved meaning map for the passage in JSON format.</p>
         <input type="file" accept="application/json,.json" data-action="upload-meaning-map" />
         ${state.meaningMap ? `<p class="loaded-info">Loaded <span class="filename">${escapeHtml(state.meaningMapFilename)}</span> · ${state.meaningMap.length} propositions · ${state.checkablePoints.length} checkable points</p>` : ""}
-        <button class="ghost-button" type="button" data-action="load-demo-map">Load Esther 2:19–23 demo</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="ghost-button" type="button" data-action="load-demo-map">Load Esther 2:19–23 demo</button>
+          <button class="ghost-button" type="button" data-action="load-demo-map-jonah">Load Jonah 4:5–8 demo</button>
+        </div>
       </div>
 
       <div class="setup-card">
@@ -1273,6 +1285,15 @@ function ensureKeyTermReview(term) {
   return r;
 }
 
+function ensureFigureFlagReview(figure) {
+  let r = state.figureFlagsReview[figure];
+  if (!r) {
+    r = { status: "pending", note: "" };
+    state.figureFlagsReview[figure] = r;
+  }
+  return r;
+}
+
 function renderKeyTermsScreen() {
   if (!state.meaningMap) {
     dom.screen.innerHTML = `<p>Load a meaning map on the Setup screen to begin.</p>`;
@@ -1303,10 +1324,68 @@ function renderKeyTermsScreen() {
                   placeholder="Free-form notes about key terms in this passage">${escapeHtml(state.keyTermsReview.__freeNotes || "")}</textarea>
       ` : terms.map((t) => renderKeyTermCard(t)).join("")}
 
+      ${state.figureFlags?.length ? renderFigureFlagsSection() : ""}
+
       <div class="screen-footer">
         <button class="ghost-button" type="button" data-action="step" data-step="sweep">← Back to Unmarked Beads</button>
         <button class="primary-button" type="button" data-action="step" data-step="review">Continue to Report →</button>
       </div>
+    </div>
+  `;
+}
+
+function renderFigureFlagsSection() {
+  const flags = state.figureFlags || [];
+  return `
+    <h3>Figure &amp; Idiom Flags</h3>
+    <p class="col-helper" style="margin:0 0 var(--space-3)">
+      Idioms, images, and figures in the meaning map. Confirm with the team that the chosen
+      rendering carries the intended meaning. The "keep image" tag tells you how strongly
+      the source image should be preserved.
+    </p>
+    ${flags.map(renderFigureFlagCard).join("")}
+  `;
+}
+
+function renderFigureFlagCard(f) {
+  const r = ensureFigureFlagReview(f.figure);
+  const statusClass = r.status === "ok" ? "is-ok" : r.status === "concern" ? "is-off" : "is-pending";
+  const keep = (f.keep_image || "").toUpperCase();
+  const keepClass = `keep-${keep.toLowerCase()}`;
+  return `
+    <div class="figure-flag-card ${statusClass}">
+      <header class="figure-flag-head">
+        <strong>${escapeHtml(f.figure)}</strong>
+        ${keep ? `<span class="keep-image-badge ${keepClass}">${escapeHtml(keep)}</span>` : ""}
+      </header>
+      ${f.surface_image ? `
+        <div class="figure-flag-row">
+          <dt>Surface image</dt>
+          <dd>${escapeHtml(f.surface_image)}</dd>
+        </div>
+      ` : ""}
+      ${f.intended_meaning ? `
+        <div class="figure-flag-row">
+          <dt>Intended meaning</dt>
+          <dd>${escapeHtml(f.intended_meaning)}</dd>
+        </div>
+      ` : ""}
+      ${f.review_note ? `
+        <div class="figure-flag-row">
+          <dt>Review note</dt>
+          <dd>${escapeHtml(f.review_note)}</dd>
+        </div>
+      ` : ""}
+      <div class="status-row">
+        <span class="col-helper">Rendering in the translation:</span>
+        <label><input type="radio" name="figureflag-${escapeHtml(f.figure)}" value="ok" ${r.status==="ok"?"checked":""} data-action="figure-flag-status" data-figure="${escapeHtml(f.figure)}"> ✓ Preserved</label>
+        <label><input type="radio" name="figureflag-${escapeHtml(f.figure)}" value="concern" ${r.status==="concern"?"checked":""} data-action="figure-flag-status" data-figure="${escapeHtml(f.figure)}"> ⚠ Needs attention</label>
+        <label><input type="radio" name="figureflag-${escapeHtml(f.figure)}" value="pending" ${r.status==="pending"?"checked":""} data-action="figure-flag-status" data-figure="${escapeHtml(f.figure)}"> — Not yet reviewed</label>
+      </div>
+      ${r.status === "concern" ? `
+        <textarea class="big-textarea" data-action="figure-flag-note" data-figure="${escapeHtml(f.figure)}"
+                  placeholder="What needs attention?">${escapeHtml(r.note || "")}</textarea>
+      ` : ""}
     </div>
   `;
 }
@@ -1730,6 +1809,7 @@ document.addEventListener("click", async (e) => {
       break;
     }
     case "load-demo-map": await loadDemoMap(); break;
+    case "load-demo-map-jonah": await loadDemoMapJonah(); break;
     case "load-demo-audio": await loadDemoAudio(); break;
     case "load-demo-english": await loadDemoEnglish(); break;
     case "toggle-point": {
@@ -1827,6 +1907,15 @@ document.addEventListener("change", (e) => {
     render();
     return;
   }
+  if (action === "figure-flag-status") {
+    const figure = target.dataset.figure;
+    const r = ensureFigureFlagReview(figure);
+    r.status = target.value;
+    if (r.status !== "concern") r.note = "";
+    schedulePersist();
+    render();
+    return;
+  }
   if (action === "l2-status") {
     const sn = Number(target.dataset.scene);
     const r = (state.level2Review[sn] = state.level2Review[sn] || { status: "pending", note: "", absence_confirmed: false, absence_note: "" });
@@ -1885,6 +1974,13 @@ document.addEventListener("input", (e) => {
   if (target.dataset.action === "key-term-note") {
     const term = target.dataset.term;
     const r = ensureKeyTermReview(term);
+    r.note = target.value;
+    schedulePersist();
+    return;
+  }
+  if (target.dataset.action === "figure-flag-note") {
+    const figure = target.dataset.figure;
+    const r = ensureFigureFlagReview(figure);
     r.note = target.value;
     schedulePersist();
     return;
@@ -2098,16 +2194,17 @@ async function handleMeaningMapUpload(file) {
   const text = await file.text();
   try {
     const parsed = JSON.parse(text);
-    const { propositions, scenes, level1, conceptBank } = parseMeaningMap(parsed);
+    const { propositions, scenes, level1, conceptBank, figureFlags } = parseMeaningMap(parsed);
     state.meaningMap = propositions;
     state.scenes = scenes;
     state.level1 = level1;
     state.conceptBank = conceptBank;
+    state.figureFlags = figureFlags;
     state.meaningMapFilename = file.name;
     state.meaningMapHash = await hashString(text);
     state.checkablePoints = deriveCheckablePoints(propositions);
     state.links = [];
-    setBanner("success", `Loaded meaning map: ${propositions.length} propositions${scenes.length ? `, ${scenes.length} scenes` : ""}${level1 ? ", with Level 1" : ""}${conceptBank.length ? `, ${conceptBank.length} key terms` : ""}.`);
+    setBanner("success", `Loaded meaning map: ${propositions.length} propositions${scenes.length ? `, ${scenes.length} scenes` : ""}${level1 ? ", with Level 1" : ""}${conceptBank.length ? `, ${conceptBank.length} key terms` : ""}${figureFlags.length ? `, ${figureFlags.length} figure flags` : ""}.`);
     render();
   } catch (e) {
     setBanner("warning", `Could not parse meaning map: ${e.message}`);
@@ -2153,25 +2250,34 @@ async function handleEnglishUpload(files) {
 // Demo loaders
 // =============================================================================
 
-async function loadDemoMap() {
+async function loadDemoMapFile(path, displayName) {
   try {
-    const r = await fetch("./demo/esther-2-19-23.meaning-map.json");
+    const r = await fetch(path);
     const text = await r.text();
     const parsed = JSON.parse(text);
-    const { propositions, scenes, level1, conceptBank } = parseMeaningMap(parsed);
+    const { propositions, scenes, level1, conceptBank, figureFlags } = parseMeaningMap(parsed);
     state.meaningMap = propositions;
     state.scenes = scenes;
     state.level1 = level1;
     state.conceptBank = conceptBank;
-    state.meaningMapFilename = "esther-2-19-23.meaning-map.json";
+    state.figureFlags = figureFlags;
+    state.meaningMapFilename = displayName;
     state.meaningMapHash = await hashString(text);
     state.checkablePoints = deriveCheckablePoints(propositions);
     state.links = [];
-    setBanner("success", `Loaded demo meaning map (${propositions.length} propositions${scenes.length ? `, ${scenes.length} scenes` : ""}${level1 ? ", with Level 1" : ""}${conceptBank.length ? `, ${conceptBank.length} key terms` : ""}).`);
+    setBanner("success", `Loaded demo meaning map (${propositions.length} propositions${scenes.length ? `, ${scenes.length} scenes` : ""}${level1 ? ", with Level 1" : ""}${conceptBank.length ? `, ${conceptBank.length} key terms` : ""}${figureFlags.length ? `, ${figureFlags.length} figure flags` : ""}).`);
     render();
   } catch (e) {
     setBanner("warning", `Demo map not found: ${e.message}`);
   }
+}
+
+async function loadDemoMap() {
+  return loadDemoMapFile("./demo/esther-2-19-23.meaning-map.json", "esther-2-19-23.meaning-map.json");
+}
+
+async function loadDemoMapJonah() {
+  return loadDemoMapFile("./demo/jonah-4-5-8.meaning-map.json", "jonah-4-5-8.meaning-map.json");
 }
 
 async function loadDemoAudio() {
@@ -2279,6 +2385,20 @@ function buildExport() {
         return {
           term: t.term,
           guidance: t.note || "",
+          status: r.status,
+          note: r.note || "",
+        };
+      }),
+    },
+    figure_flags_review: {
+      flags: (state.figureFlags || []).map((f) => {
+        const r = state.figureFlagsReview[f.figure] || { status: "pending", note: "" };
+        return {
+          figure: f.figure,
+          surface_image: f.surface_image || "",
+          intended_meaning: f.intended_meaning || "",
+          keep_image: f.keep_image || "",
+          review_note: f.review_note || "",
           status: r.status,
           note: r.note || "",
         };

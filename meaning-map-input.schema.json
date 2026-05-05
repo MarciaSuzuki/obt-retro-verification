@@ -35,6 +35,10 @@
         "concept_bank": {
           "type": "array",
           "items": { "$ref": "#/$defs/conceptBankItem" }
+        },
+        "figure_flags": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/figureFlag" }
         }
       }
     }
@@ -151,6 +155,18 @@
       "properties": {
         "term": { "type": "string" },
         "note": { "type": "string" }
+      }
+    },
+    "figureFlag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["figure"],
+      "properties": {
+        "figure": { "type": "string" },
+        "surface_image": { "type": "string" },
+        "intended_meaning": { "type": "string" },
+        "keep_image": { "enum": ["REQUIRED", "PREFERRED", "OPTIONAL", "AVOID"] },
+        "review_note": { "type": "string" }
       }
     }
   }

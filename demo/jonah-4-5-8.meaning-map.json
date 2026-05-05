@@ -1,0 +1,307 @@
+{
+  "metadata": {
+    "map_id": "test_jonah_4_5_8_v01",
+    "source_type": "PASTED_PASSAGE",
+    "bcv": "Jonah 4:5-8",
+    "reliability_note": "Map produced from pasted English text (NLV-style rendering). Hebrew was not consulted. For STA Studio testing only."
+  },
+  "classification": {
+    "genre_group": "NARRATIVE",
+    "genre": "HISTORICAL_NARRATIVE",
+    "register": "INFORMAL_CASUAL",
+    "local_register_shifts": "v.8 closes with an INTIMATE shift inside Jonah's quoted complaint. The narrator's voice across vv.5-8 is steady and observational; the divine actions are reported plainly without commentary.",
+    "suggested_tone": "watchful, ironic, with rising heat",
+    "suggested_pace": "deliberate, with each \"appointment\" — plant, worm, wind — landing as a separate beat"
+  },
+  "level_1": {
+    "prose_arc": "The passage moves from Jonah positioning himself to watch the city's fate, through three divine appointments — plant, worm, wind — that swing him from comfort to misery and finally to a spoken wish to die. The arc traces withdrawal, shelter, brief joy, sudden loss, exposure, and despair. The burden is Jonah's unresolved anger over God's mercy on Nineveh, displaced now onto a single plant that briefly makes him happy. The concern is whether Jonah will see what God is doing through these small living and natural things, or only feel the heat on his head.",
+    "context": "The setting is just outside Nineveh, immediately after Jonah's message has been delivered and the city has repented. Jonah leaves the city and chooses a position east of it, where the morning sun rises, and builds a small shelter to wait. The reader needs to know that Jonah is still angry at God's mercy from the previous scene, and that the LORD God is here staging a small private parable for one prophet, using natural elements — plant, worm, hot east wind, sun — each \"appointed\" by God in turn. The passage assumes a hearer who knows the earlier chapters of Jonah.",
+    "emotion_tone": "The tone moves through sharp swings — from watchful distance, to brief delight, to bodily misery and a spoken wish to die. The emotional weight sits in Jonah's exposed unguardedness rather than in any rhetorical heightening; his joy is vivid and short, his suffering concrete and felt on the head. A quieter ironic weight runs underneath, carried by the calm threefold pattern of divine sending — plant, worm, wind — each landing softly while producing an outsized effect on the prophet's body and heart.",
+    "communicative_function": "The passage stages a teaching encounter between God and his prophet through objects and weather rather than direct rebuke. It records the prophet's continuing resistance and prepares the ground for the closing question of the book of Jonah. Speaking the passage rehearses how God can use small things to unsettle a hardened messenger, and how a prophet's own discomfort can become the place where mercy is being shown."
+  },
+  "scenes": [
+    {
+      "scene": 1,
+      "title": "Withdrawal and watching post",
+      "range": "v.5",
+      "people": [
+        { "name": "Jonah", "role": "prophet who withdraws to watch the city", "relationship": "prophet of the LORD, the recently obeyed-but-resentful messenger sent to Nineveh", "wants": "to see what becomes of the city", "carries": "continuing anger at God's mercy, prophetic identity, watchful vigil" },
+        { "name": "The Lord God (referenced, not present)", "role": "the sender Jonah continues to resist", "relationship": "covenant God whose mercy on Nineveh has unsettled Jonah", "wants": "not foregrounded here", "carries": "divine authority that frames Jonah's withdrawal" }
+      ],
+      "places": [
+        { "name": "The city (Nineveh)", "role": "the place left behind", "type": "foreign capital recently warned and repentant", "meaning": "site of the unwanted mercy", "effect_on_scene": "defines what Jonah is watching for" },
+        { "name": "East of the city", "role": "Jonah's chosen position", "type": "open ground outside Nineveh", "meaning": "vantage point of waiting", "effect_on_scene": "places Jonah in the path of the morning sun" },
+        { "name": "Tent / booth", "role": "Jonah's makeshift shelter", "type": "improvised covering of branches or cloth", "meaning": "temporary shade for a settled wait", "effect_on_scene": "marks Jonah's intent to stay" }
+      ],
+      "objects": [
+        { "name": "Shadow of the tent", "what_it_is": "shade cast by the booth", "function_in_scene": "covers Jonah while he waits", "signals": "that protection from heat is already a concern" },
+        { "name": "Watching / waiting", "what_it_is": "Jonah's posture of observation", "function_in_scene": "motive of the whole position", "signals": "an unresolved expectation about the city's fate" }
+      ],
+      "what_happens": "Jonah leaves the city, sits to its east, builds a tent, and waits in its shade to see what will happen to the city.",
+      "communicative_purpose": "Establishes Jonah's vigil over Nineveh.",
+      "propositions": [1, 2, 3]
+    },
+    {
+      "scene": 2,
+      "title": "The plant and Jonah's joy",
+      "range": "v.6",
+      "people": [
+        { "name": "The Lord God", "role": "provider of the plant", "relationship": "covenant God acting toward his prophet", "wants": "to teach Jonah by means of the plant", "carries": "divine authority and parental concern" },
+        { "name": "Jonah", "role": "recipient of comfort", "relationship": "prophet under God's care", "wants": "relief from heat and from his suffering", "carries": "prior anger now temporarily eased by shade" }
+      ],
+      "places": [
+        { "name": "The space over Jonah", "role": "where the plant grows", "type": "spot above the prophet's head", "meaning": "site of divine provision", "effect_on_scene": "changes Jonah's microclimate" },
+        { "name": "The watching post (continuing from Scene 1)", "role": "place where Jonah still sits", "type": "open ground east of the city", "meaning": "vantage point now improved by shade", "effect_on_scene": "sets the contrast between earlier shelter and the new plant" }
+      ],
+      "objects": [
+        { "name": "Plant", "what_it_is": "a fast-growing plant raised up by God", "function_in_scene": "shade-giver above Jonah", "signals": "God's direct action through a small living thing" },
+        { "name": "Hot sun", "what_it_is": "source of Jonah's discomfort", "function_in_scene": "condition the plant relieves", "signals": "bodily suffering at issue" },
+        { "name": "Jonah's suffering", "what_it_is": "heat-driven distress, both bodily and inner", "function_in_scene": "condition relieved by the plant", "signals": "that comfort, not approval, is what is being given" },
+        { "name": "Joy", "what_it_is": "Jonah's strong gladness about the plant", "function_in_scene": "emotional response of the prophet", "signals": "that Jonah's mood is bound to a single small object" }
+      ],
+      "what_happens": "The Lord God causes a plant to grow up over Jonah to shade him from the hot sun and to ease his suffering, and Jonah is very happy about the plant.",
+      "communicative_purpose": "Shows divine provision producing brief, sharp joy.",
+      "propositions": [4, 5, 6]
+    },
+    {
+      "scene": 3,
+      "title": "The worm and the plant's destruction",
+      "range": "v.7",
+      "people": [
+        { "name": "God", "role": "sender of the worm", "relationship": "the same God who sent the plant", "wants": "to take back what was given", "carries": "divine authority over creatures and plants" },
+        { "name": "Jonah (referenced, present in setting but not acting)", "role": "still seated under what is being destroyed", "relationship": "prophet whose comfort is being removed", "wants": "not foregrounded in this scene", "carries": "an attachment to the plant that is about to be tested" }
+      ],
+      "places": [
+        { "name": "The space over Jonah", "role": "site of destruction", "type": "same spot above Jonah where the plant grew", "meaning": "where provision becomes loss", "effect_on_scene": "marks the reversal of the previous scene" }
+      ],
+      "objects": [
+        { "name": "Worm", "what_it_is": "a small creature appointed by God", "function_in_scene": "agent of the plant's destruction", "signals": "God's reversal carried out through a small living thing" },
+        { "name": "Plant", "what_it_is": "yesterday's shade", "function_in_scene": "object of destruction", "signals": "that what God gives, God may also remove" },
+        { "name": "Time-marker — beginning of the next day", "what_it_is": "the moment of the worm's action", "function_in_scene": "locates the destruction at dawn", "signals": "deliberate divine timing" },
+        { "name": "Drying up", "what_it_is": "the plant's withering after the worm's work", "function_in_scene": "result of the destruction", "signals": "that the loss is complete" }
+      ],
+      "what_happens": "At the beginning of the next day, God sends a worm that destroys the plant, and the plant dries up.",
+      "communicative_purpose": "Reverses the previous comfort by divine appointment.",
+      "propositions": [7, 8]
+    },
+    {
+      "scene": 4,
+      "title": "Wind, sun, and the death wish",
+      "range": "v.8",
+      "people": [
+        { "name": "God", "role": "sender of the hot east wind", "relationship": "the same God acting again", "wants": "to bring Jonah to the breaking point", "carries": "divine authority over wind and weather" },
+        { "name": "Jonah", "role": "sufferer who asks to die", "relationship": "prophet now without shelter", "wants": "to die rather than continue", "carries": "weakness, anger, despair" }
+      ],
+      "places": [
+        { "name": "The watching post (now without shade)", "role": "place of stripped comfort", "type": "open ground east of the city, formerly under the plant", "meaning": "place where the morning sun strikes without barrier", "effect_on_scene": "lets the heat fall directly on Jonah" },
+        { "name": "The east (direction)", "role": "source of the wind", "type": "directional reference", "meaning": "line along which heat advances toward Jonah", "effect_on_scene": "shapes the wind that adds to the sun's heat" }
+      ],
+      "objects": [
+        { "name": "Hot east wind", "what_it_is": "a scorching wind appointed by God", "function_in_scene": "third divine sending after plant and worm", "signals": "God's continuing action through natural elements" },
+        { "name": "Sun", "what_it_is": "direct sunlight rising on Jonah", "function_in_scene": "source of the heat striking him", "signals": "continued bodily suffering" },
+        { "name": "Jonah's head", "what_it_is": "body part on which the heat falls", "function_in_scene": "locus of the suffering", "signals": "bodily, concrete distress" },
+        { "name": "Weakness", "what_it_is": "faintness brought on by the heat", "function_in_scene": "physical state produced in Jonah", "signals": "that the body has reached its limit" },
+        { "name": "Begging with all his heart", "what_it_is": "an intense plea", "function_in_scene": "form of Jonah's petition", "signals": "emotional intensity of the request" },
+        { "name": "Spoken complaint", "what_it_is": "Jonah's spoken comparison of death and life", "function_in_scene": "speech turning point of the passage", "signals": "full despair given a voice" },
+        { "name": "Reply from God (absent)", "what_it_is": "any divine response within this passage", "function_in_scene": "not given here", "signals": "a held silence that the next verses will break" }
+      ],
+      "what_happens": "When the sun rises, God sends a hot east wind; the sun beats on Jonah's head until he becomes weak, and he begs with all his heart to die, saying that death is better to him than life.",
+      "communicative_purpose": "Pushes Jonah to a spoken death-wish.",
+      "significant_absence": "God does not yet answer Jonah within this passage.",
+      "propositions": [9, 10, 11, 12]
+    }
+  ],
+  "propositions": [
+    {
+      "proposition": 1,
+      "reference": "Jonah 4:5a",
+      "summary": "leaving and sitting",
+      "questions": [
+        {"q": "What happened?", "a": "leaving and sitting"},
+        {"q": "Who left?", "a": "Jonah"},
+        {"q": "Left what?", "a": "the city"},
+        {"q": "Then did what?", "a": "sat"},
+        {"q": "Sat where?", "a": "east of the city"}
+      ]
+    },
+    {
+      "proposition": 2,
+      "reference": "Jonah 4:5b",
+      "summary": "making",
+      "questions": [
+        {"q": "What happened?", "a": "making"},
+        {"q": "Who made?", "a": "Jonah"},
+        {"q": "Made what?", "a": "a tent"},
+        {"q": "For whom?", "a": "himself"}
+      ]
+    },
+    {
+      "proposition": 3,
+      "reference": "Jonah 4:5c",
+      "summary": "sitting and watching",
+      "questions": [
+        {"q": "What happened?", "a": "sitting and watching"},
+        {"q": "Who sat?", "a": "Jonah"},
+        {"q": "Sat where?", "a": "in the shadow"},
+        {"q": "Whose shadow?", "a": "the tent's"},
+        {"q": "Until when?", "a": "until he could see"},
+        {"q": "See what?", "a": "what would happen"},
+        {"q": "Happen where?", "a": "in the city"}
+      ]
+    },
+    {
+      "proposition": 4,
+      "reference": "Jonah 4:6a",
+      "summary": "causing growth",
+      "questions": [
+        {"q": "What happened?", "a": "causing growth"},
+        {"q": "Who caused?", "a": "the Lord God"},
+        {"q": "Caused what?", "a": "a plant"},
+        {"q": "Plant doing what?", "a": "growing up"},
+        {"q": "Grew over whom?", "a": "Jonah"}
+      ]
+    },
+    {
+      "proposition": 5,
+      "reference": "Jonah 4:6b",
+      "summary": "covering and stopping suffering",
+      "questions": [
+        {"q": "What was the first purpose?", "a": "covering"},
+        {"q": "Covering whom?", "a": "Jonah"},
+        {"q": "Covering from what?", "a": "the hot sun"},
+        {"q": "What was the second purpose?", "a": "stopping suffering"},
+        {"q": "Whose suffering?", "a": "Jonah's"}
+      ]
+    },
+    {
+      "proposition": 6,
+      "reference": "Jonah 4:6c",
+      "summary": "rejoicing",
+      "questions": [
+        {"q": "What happened?", "a": "rejoicing"},
+        {"q": "Who rejoiced?", "a": "Jonah"},
+        {"q": "How much?", "a": "very much"},
+        {"q": "About what?", "a": "the plant"}
+      ]
+    },
+    {
+      "proposition": 7,
+      "reference": "Jonah 4:7a",
+      "summary": "sending",
+      "questions": [
+        {"q": "What happened?", "a": "sending"},
+        {"q": "When?", "a": "beginning of the next day"},
+        {"q": "Who sent?", "a": "God"},
+        {"q": "Sent what?", "a": "a worm"}
+      ]
+    },
+    {
+      "proposition": 8,
+      "reference": "Jonah 4:7b",
+      "summary": "destruction",
+      "questions": [
+        {"q": "What happened?", "a": "destruction"},
+        {"q": "Of what?", "a": "the plant"},
+        {"q": "By what?", "a": "the worm"},
+        {"q": "What happened next?", "a": "drying up"},
+        {"q": "What dried up?", "a": "the plant"}
+      ]
+    },
+    {
+      "proposition": 9,
+      "reference": "Jonah 4:8a",
+      "summary": "sunrise and sending",
+      "questions": [
+        {"q": "What happened first?", "a": "sunrise"},
+        {"q": "What rose?", "a": "the sun"},
+        {"q": "What happened next?", "a": "sending"},
+        {"q": "Who sent?", "a": "God"},
+        {"q": "Sent what?", "a": "a wind"},
+        {"q": "What kind?", "a": "hot"},
+        {"q": "From where?", "a": "the east"}
+      ]
+    },
+    {
+      "proposition": 10,
+      "reference": "Jonah 4:8b",
+      "summary": "striking",
+      "questions": [
+        {"q": "What happened?", "a": "striking"},
+        {"q": "What struck?", "a": "the sun's heat"},
+        {"q": "Struck whom?", "a": "Jonah"},
+        {"q": "Struck what part?", "a": "his head"},
+        {"q": "Result?", "a": "weakness"},
+        {"q": "Whose weakness?", "a": "Jonah's"}
+      ]
+    },
+    {
+      "proposition": 11,
+      "reference": "Jonah 4:8c",
+      "summary": "begging",
+      "questions": [
+        {"q": "What happened?", "a": "begging"},
+        {"q": "Who begged?", "a": "Jonah"},
+        {"q": "Begged for what?", "a": "death"},
+        {"q": "How?", "a": "with all his heart"}
+      ]
+    },
+    {
+      "proposition": 12,
+      "reference": "Jonah 4:8d",
+      "summary": "speaking",
+      "questions": [
+        {"q": "What happened?", "a": "speaking"},
+        {"q": "Who spoke?", "a": "Jonah"},
+        {"q": "Said what?", "a": "preference"},
+        {"q": "Preferred what?", "a": "death"},
+        {"q": "Over what?", "a": "life"},
+        {"q": "Preferred by whom?", "a": "himself"}
+      ]
+    }
+  ],
+  "concept_bank": [
+    { "term": "The LORD God / God", "note": "The Hebrew alternates among YHWH Elohim, ha-Elohim, and Elohim across vv.6-8. The English flattens these, but the alternation may matter for STA testing and for languages that use different divine names. Needs controlled handling." },
+    { "term": "Plant (qiqayon in Hebrew)", "note": "A specific fast-growing plant; some traditions identify it as castor-oil plant or gourd. The English here says only \"plant.\" Needs careful target rendering." },
+    { "term": "Worm", "note": "A small creature, but here divinely \"appointed\" using the same verb pattern used earlier in Jonah for the great fish. The pattern itself carries weight beyond the creature." },
+    { "term": "Hot east wind", "note": "A specific Mediterranean weather phenomenon (sirocco-type); not just \"warm air.\" Needs target-language equivalent that signals scorching, dry, unbearable heat." },
+    { "term": "East of the city", "note": "Directional language with possible covenantal echoes (Eden, exile, judgment); test map flags for review." },
+    { "term": "\"Death is better than life\" formula", "note": "A recurring Hebrew Bible pattern (compare Elijah, Job). May warrant controlled handling so the despair register is not flattened into casual complaint." }
+  ],
+  "figure_flags": [
+    {
+      "figure": "Made a tent / booth",
+      "surface_image": "a small improvised shelter",
+      "intended_meaning": "a temporary shaded waiting place, not a dwelling",
+      "keep_image": "PREFERRED",
+      "review_note": "Target cultures with no booth tradition may need help understanding it as a temporary shade-structure, not a tent for travel."
+    },
+    {
+      "figure": "God appointed / sent (plant, worm, wind)",
+      "surface_image": "God dispatching small creatures and natural forces",
+      "intended_meaning": "sovereign placement of small things to act on a person",
+      "keep_image": "REQUIRED",
+      "review_note": "This pattern is structural across the book of Jonah and should not be reduced to ordinary \"happened\" language."
+    },
+    {
+      "figure": "Begged with all his heart",
+      "surface_image": "a whole-person plea",
+      "intended_meaning": "deep, urgent, total request",
+      "keep_image": "PREFERRED",
+      "review_note": "Target language may have its own whole-person idiom (whole liver, whole soul, whole insides)."
+    },
+    {
+      "figure": "Death is better to me than life",
+      "surface_image": "a comparison between two states",
+      "intended_meaning": "a despairing wish to die",
+      "keep_image": "PREFERRED",
+      "review_note": "Keep the comparative form if the target language allows; otherwise render as a strong wish to die."
+    },
+    {
+      "figure": "Hot east wind",
+      "surface_image": "scorching wind from the east",
+      "intended_meaning": "weather as an instrument of suffering, divinely sent",
+      "keep_image": "REQUIRED",
+      "review_note": "Needs a brief cultural footing if the target audience does not know desert wind effects."
+    }
+  ]
+}
