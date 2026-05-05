@@ -894,7 +894,10 @@ function renderSetupScreen() {
         <p>Upload the OBT audio draft to be verified.</p>
         <input type="file" accept="audio/*" data-action="upload-audio" />
         ${state.audioSource.filename ? `<p class="loaded-info">Loaded <span class="filename">${escapeHtml(state.audioSource.filename)}</span>${state.audioSource.duration ? ` · ${fmtTime(state.audioSource.duration)}` : ""}</p>` : ""}
-        <button class="ghost-button" type="button" data-action="load-demo-audio">Load demo audio</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="ghost-button" type="button" data-action="load-demo-audio">Load Esther demo audio</button>
+          <button class="ghost-button" type="button" data-action="load-demo-audio-jonah">Load Jonah demo audio</button>
+        </div>
       </div>
 
     </div>
@@ -1811,6 +1814,7 @@ document.addEventListener("click", async (e) => {
     case "load-demo-map": await loadDemoMap(); break;
     case "load-demo-map-jonah": await loadDemoMapJonah(); break;
     case "load-demo-audio": await loadDemoAudio(); break;
+    case "load-demo-audio-jonah": await loadDemoAudioJonah(); break;
     case "load-demo-english": await loadDemoEnglish(); break;
     case "toggle-point": {
       toggleMatchForPoint(target.dataset.point);
@@ -2280,14 +2284,22 @@ async function loadDemoMapJonah() {
   return loadDemoMapFile("./demo/jonah-4-5-8.meaning-map.json", "jonah-4-5-8.meaning-map.json");
 }
 
-async function loadDemoAudio() {
+async function loadDemoAudioFile(path, displayName) {
   try {
-    const r = await fetch("./demo/ester-2-19-23.mp3");
+    const r = await fetch(path);
     const blob = await r.blob();
-    attachAudio(new File([blob], "ester-2-19-23.mp3", { type: blob.type || "audio/mpeg" }));
+    attachAudio(new File([blob], displayName, { type: blob.type || "audio/mpeg" }));
   } catch (e) {
     setBanner("warning", `Demo audio not found: ${e.message}`);
   }
+}
+
+async function loadDemoAudio() {
+  return loadDemoAudioFile("./demo/ester-2-19-23.mp3", "ester-2-19-23.mp3");
+}
+
+async function loadDemoAudioJonah() {
+  return loadDemoAudioFile("./demo/jonah-4-5-8.mp3", "jonah-4-5-8.mp3");
 }
 
 async function loadDemoEnglish() {
