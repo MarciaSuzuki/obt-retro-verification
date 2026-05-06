@@ -1,0 +1,307 @@
+{
+  "metadata": {
+    "map_id": "test_jonas_4_5_8_v01_pt",
+    "source_type": "PASSAGEM_COLADA",
+    "bcv": "Jonas 4:5-8",
+    "reliability_note": "Mapa produzido a partir do texto inglês colado (estilo NLV). O hebraico não foi consultado. Para testes do STA Studio apenas."
+  },
+  "classification": {
+    "genre_group": "NARRATIVA",
+    "genre": "NARRATIVA_HISTORICA",
+    "register": "INFORMAL_CASUAL",
+    "local_register_shifts": "v.8 fecha com uma virada INTIMA dentro da queixa falada de Jonas. A voz do narrador em vv.5-8 é firme e observacional; as ações divinas são reportadas sem comentário.",
+    "suggested_tone": "atento, irônico, com calor crescente",
+    "suggested_pace": "deliberado, com cada \"designação\" — planta, verme, vento — chegando como um tempo separado"
+  },
+  "level_1": {
+    "prose_arc": "A passagem move-se de Jonas posicionando-se para vigiar o destino da cidade, através de três designações divinas — planta, verme, vento — que o balançam do conforto à miséria e finalmente a um desejo dito de morrer. O arco percorre afastamento, abrigo, alegria breve, perda súbita, exposição e desespero. A carga é a raiva não resolvida de Jonas pela misericórdia de Deus a Nínive, agora deslocada para uma única planta que brevemente o faz feliz. A preocupação é se Jonas verá o que Deus está fazendo por meio dessas pequenas coisas vivas e naturais, ou só sentirá o calor sobre a cabeça.",
+    "context": "O cenário é logo fora de Nínive, imediatamente após a mensagem de Jonas ter sido entregue e a cidade ter se arrependido. Jonas deixa a cidade e escolhe uma posição a leste dela, onde o sol da manhã nasce, e constrói um pequeno abrigo para esperar. O leitor precisa saber que Jonas continua irado pela misericórdia de Deus na cena anterior, e que o Senhor Deus está aqui encenando uma pequena parábola privada para um único profeta, usando elementos naturais — planta, verme, vento leste quente, sol — cada um \"designado\" por Deus em sua vez. A passagem assume um ouvinte que conhece os capítulos anteriores de Jonas.",
+    "emotion_tone": "O tom move-se através de oscilações intensas — da distância atenta, à breve alegria, à miséria corporal e a um desejo dito de morrer. O peso emocional está no desabrigo exposto de Jonas e não em qualquer elevação retórica; sua alegria é vívida e curta, seu sofrimento concreto e sentido sobre a cabeça. Um peso irônico mais silencioso corre por baixo, carregado pelo padrão tríplice calmo do envio divino — planta, verme, vento — cada um chegando suave enquanto produz efeito desproporcional sobre o corpo e o coração do profeta.",
+    "communicative_function": "A passagem encena um encontro de ensino entre Deus e o profeta por meio de objetos e clima em vez de repreensão direta. Registra a resistência continuada do profeta e prepara o terreno para a pergunta final do livro de Jonas. Falar a passagem ensaia como Deus pode usar pequenas coisas para perturbar um mensageiro endurecido, e como o próprio desconforto do profeta pode tornar-se o lugar onde a misericórdia está sendo mostrada."
+  },
+  "concept_bank": [
+    { "term": "O Senhor Deus / Deus", "note": "O hebraico alterna entre YHWH Elohim, ha-Elohim e Elohim ao longo de vv.6-8. O inglês achata isso, mas a alternância pode importar para teste do STA e para línguas que usam nomes divinos diferentes. Precisa de tratamento controlado." },
+    { "term": "Planta (qiqayon em hebraico)", "note": "Uma planta específica de crescimento rápido; algumas tradições a identificam como mamona ou cabaça. O inglês aqui diz apenas 'planta'. Precisa de tradução-alvo cuidadosa." },
+    { "term": "Verme", "note": "Uma criatura pequena, mas aqui divinamente \"designada\" usando o mesmo padrão verbal usado antes em Jonas para o grande peixe. O padrão em si carrega peso além da criatura." },
+    { "term": "Vento leste quente", "note": "Um fenômeno climático mediterrâneo específico (tipo siroco); não apenas \"ar morno\". Precisa de equivalente na língua-alvo que sinalize calor abrasador, seco, insuportável." },
+    { "term": "Leste da cidade", "note": "Linguagem direcional com possíveis ecos aliancia (Éden, exílio, juízo); o mapa de teste sinaliza para revisão." },
+    { "term": "Fórmula \"a morte é melhor que a vida\"", "note": "Padrão recorrente no Antigo Testamento (compare Elias, Jó). Pode merecer tratamento controlado para que o registro de desespero não seja achatado em queixa casual." }
+  ],
+  "figure_flags": [
+    {
+      "figure": "Fez uma tenda / cabana",
+      "surface_image": "um pequeno abrigo improvisado",
+      "intended_meaning": "um lugar de espera sombreada temporário, não uma moradia",
+      "keep_image": "PREFERRED",
+      "review_note": "Culturas-alvo sem tradição de cabana podem precisar de ajuda para entender como estrutura de sombra temporária, não como tenda de viagem."
+    },
+    {
+      "figure": "Deus designou / enviou (planta, verme, vento)",
+      "surface_image": "Deus despachando pequenas criaturas e forças naturais",
+      "intended_meaning": "colocação soberana de pequenas coisas para agir sobre uma pessoa",
+      "keep_image": "REQUIRED",
+      "review_note": "Esse padrão é estrutural no livro de Jonas e não deve ser reduzido a linguagem comum de 'aconteceu'."
+    },
+    {
+      "figure": "Implorou de todo o coração",
+      "surface_image": "um pedido de pessoa inteira",
+      "intended_meaning": "pedido profundo, urgente, total",
+      "keep_image": "PREFERRED",
+      "review_note": "A língua-alvo pode ter seu próprio idioma de pessoa inteira (todo o fígado, toda a alma, todas as entranhas)."
+    },
+    {
+      "figure": "A morte me é melhor do que a vida",
+      "surface_image": "uma comparação entre dois estados",
+      "intended_meaning": "um desejo desesperado de morrer",
+      "keep_image": "PREFERRED",
+      "review_note": "Mantenha a forma comparativa se a língua-alvo permitir; senão, traduza como um desejo forte de morrer."
+    },
+    {
+      "figure": "Vento leste quente",
+      "surface_image": "vento abrasador vindo do leste",
+      "intended_meaning": "clima como instrumento de sofrimento, divinamente enviado",
+      "keep_image": "REQUIRED",
+      "review_note": "Precisa de uma breve nota cultural se a audiência-alvo não conhece os efeitos do vento do deserto."
+    }
+  ],
+  "scenes": [
+    {
+      "scene": 1,
+      "title": "Afastamento e posto de vigia",
+      "range": "v.5",
+      "people": [
+        { "name": "Jonas", "role": "profeta que se afasta para vigiar a cidade", "relationship": "profeta do Senhor, mensageiro recém-obediente-mas-ressentido enviado a Nínive", "wants": "ver o que acontece com a cidade", "carries": "raiva continuada pela misericórdia de Deus, identidade profética, vigília atenta" },
+        { "name": "O Senhor Deus (referenciado, não presente)", "role": "o que envia, contra quem Jonas continua a resistir", "relationship": "Deus de aliança cuja misericórdia a Nínive perturbou Jonas", "wants": "não foregrounded aqui", "carries": "autoridade divina que enquadra o afastamento de Jonas" }
+      ],
+      "places": [
+        { "name": "A cidade (Nínive)", "role": "o lugar deixado para trás", "type": "capital estrangeira recém-avisada e arrependida", "meaning": "sítio da misericórdia indesejada", "effect_on_scene": "define o que Jonas está vigiando" },
+        { "name": "Leste da cidade", "role": "posição escolhida por Jonas", "type": "campo aberto fora de Nínive", "meaning": "ponto de observação da espera", "effect_on_scene": "coloca Jonas no caminho do sol da manhã" },
+        { "name": "Tenda / cabana", "role": "abrigo improvisado de Jonas", "type": "cobertura improvisada de galhos ou pano", "meaning": "sombra temporária para uma espera assentada", "effect_on_scene": "marca a intenção de Jonas de ficar" }
+      ],
+      "objects": [
+        { "name": "Sombra da tenda", "what_it_is": "sombra projetada pela cabana", "function_in_scene": "cobre Jonas enquanto ele espera", "signals": "que a proteção do calor já é uma preocupação" },
+        { "name": "Vigiar / esperar", "what_it_is": "postura de observação de Jonas", "function_in_scene": "motivo de toda a posição", "signals": "uma expectativa não resolvida sobre o destino da cidade" }
+      ],
+      "what_happens": "Jonas deixa a cidade, senta-se a leste dela, monta uma tenda e espera em sua sombra para ver o que acontecerá com a cidade.",
+      "communicative_purpose": "Estabelece a vigília de Jonas sobre Nínive.",
+      "propositions": [1, 2, 3]
+    },
+    {
+      "scene": 2,
+      "title": "A planta e a alegria de Jonas",
+      "range": "v.6",
+      "people": [
+        { "name": "O Senhor Deus", "role": "provedor da planta", "relationship": "Deus de aliança agindo em direção ao seu profeta", "wants": "ensinar Jonas por meio da planta", "carries": "autoridade divina e cuidado paternal" },
+        { "name": "Jonas", "role": "receptor de conforto", "relationship": "profeta sob o cuidado de Deus", "wants": "alívio do calor e do sofrimento", "carries": "raiva anterior agora temporariamente aliviada pela sombra" }
+      ],
+      "places": [
+        { "name": "O espaço acima de Jonas", "role": "onde a planta cresce", "type": "ponto acima da cabeça do profeta", "meaning": "sítio da provisão divina", "effect_on_scene": "muda o microclima de Jonas" },
+        { "name": "O posto de vigia (continuando da Cena 1)", "role": "lugar onde Jonas ainda está sentado", "type": "campo aberto a leste da cidade", "meaning": "ponto de observação agora melhorado pela sombra", "effect_on_scene": "estabelece o contraste entre o abrigo anterior e a nova planta" }
+      ],
+      "objects": [
+        { "name": "Planta", "what_it_is": "uma planta de crescimento rápido levantada por Deus", "function_in_scene": "doadora de sombra acima de Jonas", "signals": "ação direta de Deus por meio de uma pequena coisa viva" },
+        { "name": "Sol quente", "what_it_is": "fonte do desconforto de Jonas", "function_in_scene": "condição que a planta alivia", "signals": "sofrimento corporal em questão" },
+        { "name": "Sofrimento de Jonas", "what_it_is": "angústia provocada pelo calor, corporal e interna", "function_in_scene": "condição aliviada pela planta", "signals": "que conforto, não aprovação, é o que está sendo dado" },
+        { "name": "Alegria", "what_it_is": "forte contentamento de Jonas com a planta", "function_in_scene": "resposta emocional do profeta", "signals": "que o ânimo de Jonas está preso a um único pequeno objeto" }
+      ],
+      "what_happens": "O Senhor Deus faz uma planta crescer sobre Jonas para sombreá-lo do sol quente e aliviar seu sofrimento, e Jonas fica muito feliz com a planta.",
+      "communicative_purpose": "Mostra provisão divina produzindo alegria breve e intensa.",
+      "propositions": [4, 5, 6]
+    },
+    {
+      "scene": 3,
+      "title": "O verme e a destruição da planta",
+      "range": "v.7",
+      "people": [
+        { "name": "Deus", "role": "o que envia o verme", "relationship": "o mesmo Deus que enviou a planta", "wants": "tomar de volta o que foi dado", "carries": "autoridade divina sobre criaturas e plantas" },
+        { "name": "Jonas (referenciado, presente no cenário mas não agindo)", "role": "ainda sentado sob o que está sendo destruído", "relationship": "profeta cujo conforto está sendo removido", "wants": "não foregrounded nesta cena", "carries": "um apego à planta que está prestes a ser testado" }
+      ],
+      "places": [
+        { "name": "O espaço acima de Jonas", "role": "sítio da destruição", "type": "mesmo ponto acima de Jonas onde a planta cresceu", "meaning": "onde a provisão se torna perda", "effect_on_scene": "marca a reversão da cena anterior" }
+      ],
+      "objects": [
+        { "name": "Verme", "what_it_is": "uma pequena criatura designada por Deus", "function_in_scene": "agente da destruição da planta", "signals": "reversão de Deus realizada por meio de uma pequena coisa viva" },
+        { "name": "Planta", "what_it_is": "a sombra de ontem", "function_in_scene": "objeto da destruição", "signals": "que o que Deus dá, Deus também pode tirar" },
+        { "name": "Marcador temporal — começo do dia seguinte", "what_it_is": "o momento da ação do verme", "function_in_scene": "localiza a destruição ao amanhecer", "signals": "tempo divino deliberado" },
+        { "name": "Secar", "what_it_is": "o murchar da planta após o trabalho do verme", "function_in_scene": "resultado da destruição", "signals": "que a perda é completa" }
+      ],
+      "what_happens": "No começo do dia seguinte, Deus envia um verme que destrói a planta, e a planta seca.",
+      "communicative_purpose": "Reverte o conforto anterior por designação divina.",
+      "propositions": [7, 8]
+    },
+    {
+      "scene": 4,
+      "title": "Vento, sol e o desejo de morte",
+      "range": "v.8",
+      "people": [
+        { "name": "Deus", "role": "o que envia o vento leste quente", "relationship": "o mesmo Deus agindo de novo", "wants": "levar Jonas ao ponto de ruptura", "carries": "autoridade divina sobre vento e clima" },
+        { "name": "Jonas", "role": "sofredor que pede para morrer", "relationship": "profeta agora sem abrigo", "wants": "morrer em vez de continuar", "carries": "fraqueza, raiva, desespero" }
+      ],
+      "places": [
+        { "name": "O posto de vigia (agora sem sombra)", "role": "lugar de conforto retirado", "type": "campo aberto a leste da cidade, antes sob a planta", "meaning": "lugar onde o sol da manhã bate sem barreira", "effect_on_scene": "permite que o calor caia diretamente sobre Jonas" },
+        { "name": "O leste (direção)", "role": "fonte do vento", "type": "referência direcional", "meaning": "linha pela qual o calor avança em direção a Jonas", "effect_on_scene": "molda o vento que se soma ao calor do sol" }
+      ],
+      "objects": [
+        { "name": "Vento leste quente", "what_it_is": "um vento abrasador designado por Deus", "function_in_scene": "terceiro envio divino após planta e verme", "signals": "ação contínua de Deus por meio de elementos naturais" },
+        { "name": "Sol", "what_it_is": "luz solar direta nascendo sobre Jonas", "function_in_scene": "fonte do calor que o atinge", "signals": "sofrimento corporal contínuo" },
+        { "name": "Cabeça de Jonas", "what_it_is": "parte do corpo onde o calor cai", "function_in_scene": "lugar do sofrimento", "signals": "angústia corporal, concreta" },
+        { "name": "Fraqueza", "what_it_is": "desfalecimento provocado pelo calor", "function_in_scene": "estado físico produzido em Jonas", "signals": "que o corpo chegou ao limite" },
+        { "name": "Implorar de todo o coração", "what_it_is": "uma súplica intensa", "function_in_scene": "forma do pedido de Jonas", "signals": "intensidade emocional do pedido" },
+        { "name": "Queixa falada", "what_it_is": "comparação falada de Jonas entre morte e vida", "function_in_scene": "ponto de virada da fala da passagem", "signals": "desespero pleno tornado voz" },
+        { "name": "Resposta de Deus (ausente)", "what_it_is": "qualquer resposta divina dentro desta passagem", "function_in_scene": "não dada aqui", "signals": "um silêncio mantido que os próximos versos quebrarão" }
+      ],
+      "what_happens": "Quando o sol nasce, Deus envia um vento leste quente; o sol bate na cabeça de Jonas até que ele fica fraco, e ele implora de todo o coração para morrer, dizendo que a morte lhe é melhor do que a vida.",
+      "communicative_purpose": "Empurra Jonas a um desejo falado de morte.",
+      "significant_absence": "Deus ainda não responde a Jonas dentro desta passagem.",
+      "propositions": [9, 10, 11, 12]
+    }
+  ],
+  "propositions": [
+    {
+      "proposition": 1,
+      "reference": "Jonas 4:5a",
+      "summary": "saída e assentamento",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "saída e assentamento"},
+        {"q": "Quem saiu?", "a": "Jonas"},
+        {"q": "Saiu de onde?", "a": "a cidade"},
+        {"q": "Depois fez o quê?", "a": "sentou-se"},
+        {"q": "Sentou-se onde?", "a": "a leste da cidade"}
+      ]
+    },
+    {
+      "proposition": 2,
+      "reference": "Jonas 4:5b",
+      "summary": "construção",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "construção"},
+        {"q": "Quem construiu?", "a": "Jonas"},
+        {"q": "Construiu o quê?", "a": "uma tenda"},
+        {"q": "Para quem?", "a": "para si mesmo"}
+      ]
+    },
+    {
+      "proposition": 3,
+      "reference": "Jonas 4:5c",
+      "summary": "sentar e vigiar",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "sentar e vigiar"},
+        {"q": "Quem sentou?", "a": "Jonas"},
+        {"q": "Sentou onde?", "a": "na sombra"},
+        {"q": "Sombra de quê?", "a": "da tenda"},
+        {"q": "Até quando?", "a": "até poder ver"},
+        {"q": "Ver o quê?", "a": "o que aconteceria"},
+        {"q": "Aconteceria onde?", "a": "na cidade"}
+      ]
+    },
+    {
+      "proposition": 4,
+      "reference": "Jonas 4:6a",
+      "summary": "fazer crescer",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "fazer crescer"},
+        {"q": "Quem fez?", "a": "o Senhor Deus"},
+        {"q": "Fez o quê?", "a": "uma planta"},
+        {"q": "A planta fez o quê?", "a": "cresceu"},
+        {"q": "Cresceu sobre quem?", "a": "Jonas"}
+      ]
+    },
+    {
+      "proposition": 5,
+      "reference": "Jonas 4:6b",
+      "summary": "cobrir e aliviar o sofrimento",
+      "questions": [
+        {"q": "Qual o primeiro propósito?", "a": "cobrir"},
+        {"q": "Cobrir quem?", "a": "Jonas"},
+        {"q": "Cobrir do quê?", "a": "do sol quente"},
+        {"q": "Qual o segundo propósito?", "a": "parar o sofrimento"},
+        {"q": "Sofrimento de quem?", "a": "de Jonas"}
+      ]
+    },
+    {
+      "proposition": 6,
+      "reference": "Jonas 4:6c",
+      "summary": "alegria",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "alegria"},
+        {"q": "Quem se alegrou?", "a": "Jonas"},
+        {"q": "Quanto?", "a": "muito"},
+        {"q": "Com o quê?", "a": "a planta"}
+      ]
+    },
+    {
+      "proposition": 7,
+      "reference": "Jonas 4:7a",
+      "summary": "envio",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "envio"},
+        {"q": "Quando?", "a": "começo do dia seguinte"},
+        {"q": "Quem enviou?", "a": "Deus"},
+        {"q": "Enviou o quê?", "a": "um verme"}
+      ]
+    },
+    {
+      "proposition": 8,
+      "reference": "Jonas 4:7b",
+      "summary": "destruição",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "destruição"},
+        {"q": "De quê?", "a": "a planta"},
+        {"q": "Por quê?", "a": "o verme"},
+        {"q": "O que aconteceu depois?", "a": "secar"},
+        {"q": "O que secou?", "a": "a planta"}
+      ]
+    },
+    {
+      "proposition": 9,
+      "reference": "Jonas 4:8a",
+      "summary": "amanhecer e envio",
+      "questions": [
+        {"q": "O que aconteceu primeiro?", "a": "amanhecer"},
+        {"q": "O que nasceu?", "a": "o sol"},
+        {"q": "O que aconteceu depois?", "a": "envio"},
+        {"q": "Quem enviou?", "a": "Deus"},
+        {"q": "Enviou o quê?", "a": "um vento"},
+        {"q": "Que tipo?", "a": "quente"},
+        {"q": "De onde?", "a": "do leste"}
+      ]
+    },
+    {
+      "proposition": 10,
+      "reference": "Jonas 4:8b",
+      "summary": "atingir",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "atingir"},
+        {"q": "O que atingiu?", "a": "o calor do sol"},
+        {"q": "Atingiu quem?", "a": "Jonas"},
+        {"q": "Atingiu que parte?", "a": "a cabeça"},
+        {"q": "Resultado?", "a": "fraqueza"},
+        {"q": "Fraqueza de quem?", "a": "de Jonas"}
+      ]
+    },
+    {
+      "proposition": 11,
+      "reference": "Jonas 4:8c",
+      "summary": "implorar",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "implorar"},
+        {"q": "Quem implorou?", "a": "Jonas"},
+        {"q": "Implorou pelo quê?", "a": "morte"},
+        {"q": "Como?", "a": "de todo o coração"}
+      ]
+    },
+    {
+      "proposition": 12,
+      "reference": "Jonas 4:8d",
+      "summary": "falar",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "falar"},
+        {"q": "Quem falou?", "a": "Jonas"},
+        {"q": "Disse o quê?", "a": "preferência"},
+        {"q": "Preferiu o quê?", "a": "a morte"},
+        {"q": "Em vez de quê?", "a": "a vida"},
+        {"q": "Preferida por quem?", "a": "por ele mesmo"}
+      ]
+    }
+  ]
+}

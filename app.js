@@ -9,6 +9,68 @@
 
 const SCHEMA_VERSION = "TRIPOD_RETRO_VERIFICATION_REPORT_V1";
 const STORAGE_KEY = "oral-retro-verification-v1";
+const LANG_KEY = "obt-retro-verification-lang";
+
+// =============================================================================
+// Bilingual support
+// =============================================================================
+
+// Auto-detect: pt-BR / pt-PT / pt-* → "pt", everything else → "en". User can
+// override via the EN/PT toggle in the header; the choice persists in
+// localStorage.
+function detectLang() {
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved === "en" || saved === "pt") return saved;
+  } catch {}
+  const nav = (navigator.language || "en").toLowerCase();
+  return nav.startsWith("pt") ? "pt" : "en";
+}
+
+let CURRENT_LANG = detectLang();
+
+// Tiny helper: pick the right string for the current language. Strings are
+// inlined at every call site (`L("Setup", "Configurar")`) — no key table.
+function L(en, pt) {
+  return CURRENT_LANG === "pt" ? pt : en;
+}
+
+function setLang(lang) {
+  if (lang !== "en" && lang !== "pt") return;
+  CURRENT_LANG = lang;
+  try { localStorage.setItem(LANG_KEY, lang); } catch {}
+  applyShellI18n();
+  render();
+}
+
+// Apply translations to all persistent shell elements that carry data-pt /
+// data-pt-title / data-pt-aria attributes. Called on init and on language
+// change.
+function applyShellI18n() {
+  const isPt = CURRENT_LANG === "pt";
+  document.documentElement.lang = isPt ? "pt-BR" : "en";
+  document.title = isPt
+    ? "Retroverificação OBT — Ecossistema Tripod"
+    : "OBT Retro-Verification — Tripod Ecosystem";
+
+  document.querySelectorAll("[data-pt]").forEach((el) => {
+    if (el.dataset._enText === undefined) el.dataset._enText = el.textContent;
+    el.textContent = isPt ? el.dataset.pt : el.dataset._enText;
+  });
+  document.querySelectorAll("[data-pt-title]").forEach((el) => {
+    if (el.dataset._enTitle === undefined) el.dataset._enTitle = el.title || "";
+    el.title = isPt ? el.dataset.ptTitle : el.dataset._enTitle;
+  });
+  document.querySelectorAll("[data-pt-aria]").forEach((el) => {
+    if (el.dataset._enAria === undefined) el.dataset._enAria = el.getAttribute("aria-label") || "";
+    el.setAttribute("aria-label", isPt ? el.dataset.ptAria : el.dataset._enAria);
+  });
+
+  // Sync the EN/PT toggle visual state.
+  document.querySelectorAll("#langToggle button").forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.lang === CURRENT_LANG);
+  });
+}
 
 // Bead synthesis defaults (used when no acoustemes manifest is provided).
 // Medium = ~0.5s/bead. Coarse doubles, fine halves.
@@ -18,19 +80,23 @@ const SECONDS_PER_BEAD = { coarse: 1.0, medium: 0.5, fine: 0.25 };
 const FRAMES_PER_BEAD = { coarse: 50, medium: 25, fine: 10 };
 
 const STEPS = [
-  { id: "setup",  label: "1", name: "Setup Your Verification Session" },
-  { id: "study",  label: "2", name: "Study the Meaning Map of the Passage" },
-  { id: "whole",  label: "3", name: "Listen to the Audio Draft With the Team" },
-  { id: "scenes", label: "4", name: "Verify People, Places, Objects and Elements" },
-  { id: "match",  label: "5", name: "Match Audio to Meaning" },
-  { id: "sweep",  label: "6", name: "Check Unmarked Beads" },
-  { id: "key",    label: "7", name: "Verify Key Terms" },
-  { id: "review", label: "8", name: "Write Your Report" },
+  { id: "setup",  label: "1", name_en: "Setup Your Verification Session", name_pt: "Configure sua sessão de verificação" },
+  { id: "study",  label: "2", name_en: "Study the Meaning Map of the Passage", name_pt: "Estude o mapa de significado da passagem" },
+  { id: "whole",  label: "3", name_en: "Listen to the Audio Draft With the Team", name_pt: "Ouça o rascunho de áudio com a equipe" },
+  { id: "scenes", label: "4", name_en: "Verify People, Places, Objects and Elements", name_pt: "Verifique pessoas, lugares, objetos e elementos" },
+  { id: "match",  label: "5", name_en: "Match Audio to Meaning", name_pt: "Combine áudio com significado" },
+  { id: "sweep",  label: "6", name_en: "Check Unmarked Beads", name_pt: "Verifique contas não marcadas" },
+  { id: "key",    label: "7", name_en: "Verify Key Terms", name_pt: "Verifique termos-chave" },
+  { id: "review", label: "8", name_en: "Write Your Report", name_pt: "Escreva seu relatório" },
 ];
+
+function stepName(step) {
+  return CURRENT_LANG === "pt" ? step.name_pt : step.name_en;
+}
 
 // Suggested prompts for the Level 1 conversational review. Static — they are
 // guides for the mentor's conversation, not a form to fill out.
-const LEVEL1_PROMPTS = [
+const LEVEL1_PROMPTS_EN = [
   "Can the team retell what they heard in their own words?",
   "Is this a narrative? Did the team hear it as a story?",
   "What is the register — formal/official, intimate/family, or something else?",
@@ -39,6 +105,20 @@ const LEVEL1_PROMPTS = [
   "Why is this story being told? What does it leave with the listener?",
   "Did anything in the audio surprise the team or sound off?",
 ];
+
+const LEVEL1_PROMPTS_PT = [
+  "A equipe consegue recontar o que ouviu com suas próprias palavras?",
+  "Isto é uma narrativa? A equipe ouviu como uma história?",
+  "Qual é o registro — formal/oficial, íntimo/familiar, ou outro?",
+  "Quais emoções estão expressas ou evidentes no áudio?",
+  "Onde e quando a história se passa? A equipe ouviu isso?",
+  "Por que essa história está sendo contada? O que ela deixa para quem ouve?",
+  "Algo no áudio surpreendeu a equipe ou soou estranho?",
+];
+
+function level1Prompts() {
+  return CURRENT_LANG === "pt" ? LEVEL1_PROMPTS_PT : LEVEL1_PROMPTS_EN;
+}
 
 // =============================================================================
 // State
@@ -94,7 +174,7 @@ const state = {
   drag: null, // {anchorIndex} during selection drag
   hoverPreviewBeadIndex: null,
   banner: null, // {kind, text}
-  studyVersions: "NIV,ESV,NLT,NRSV",
+  studyVersions: detectLang() === "pt" ? "NVI,ARA,NTLH,ARC" : "NIV,ESV,NLT,NRSV",
 };
 
 // =============================================================================
@@ -168,7 +248,9 @@ function setBanner(kind, text) {
 // Parse a single reference like "Esther 2:19" or "1 Samuel 3:4a".
 // Returns {book, chapter, verse, sub} or null.
 function parseRef(s) {
-  const m = String(s ?? "").match(/^(\d?\s*[A-Za-z][A-Za-z\s]*?)\s+(\d+):(\d+)([a-z])?\s*$/);
+  // Allow Unicode letters so Portuguese book names with accents (Coríntios,
+  // Gálatas, Apocalipse, etc.) parse correctly alongside English ones.
+  const m = String(s ?? "").match(/^(\d?\s*[\p{L}][\p{L}\s]*?)\s+(\d+):(\d+)([a-z])?\s*$/u);
   if (!m) return null;
   return {
     book: m[1].trim().replace(/\s+/g, " "),
@@ -194,13 +276,22 @@ function passageRangeFromMap() {
   return { book, startChapter: min.chapter, startVerse: min.verse, endChapter: max.chapter, endVerse: max.verse, display };
 }
 
-// Canonical English NT book names; everything else is treated as Old Testament.
+// Canonical NT book names in English and Portuguese; everything else is
+// treated as Old Testament for the purpose of the original-language pick
+// (Greek for NT, Hebrew for OT).
 const NT_BOOKS = new Set([
+  // English
   "Matthew","Mark","Luke","John","Acts",
   "Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians",
   "Philippians","Colossians","1 Thessalonians","2 Thessalonians",
   "1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James",
   "1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation",
+  // Portuguese
+  "Mateus","Marcos","Lucas","João","Atos",
+  "Romanos","1 Coríntios","2 Coríntios","Gálatas","Efésios",
+  "Filipenses","Colossenses","1 Tessalonicenses","2 Tessalonicenses",
+  "1 Timóteo","2 Timóteo","Tito","Filemom","Hebreus","Tiago",
+  "1 Pedro","2 Pedro","1 João","2 João","3 João","Judas","Apocalipse",
 ]);
 
 function originalLanguageCodeForBook(book) {
@@ -260,21 +351,21 @@ function parseMeaningMap(parsed) {
 // meaning map provides. Supports both the PDF's rich names and the original
 // short names side by side.
 function getLevel1Display() {
-  const L = state.level1;
-  if (!L) return [];
+  const L1 = state.level1;
+  if (!L1) return [];
   const candidates = [
-    ["prose_arc", "Prose Arc / Shape / Argument / Burden / Concern"],
-    ["context", "Context"],
-    ["emotion_tone", "Emotion / Tone"],
-    ["communicative_function", "Communicative Function"],
-    ["what_the_story_is_about_and_its_shape", "What the story is about and its shape"],
-    ["where_and_when", "Where and when"],
-    ["feeling_of_the_story", "Feeling of the story"],
-    ["why_being_told", "Why being told"],
+    ["prose_arc", L("Prose Arc / Shape / Argument / Burden / Concern", "Arco / Forma / Argumento / Carga / Preocupação")],
+    ["context", L("Context", "Contexto")],
+    ["emotion_tone", L("Emotion / Tone", "Emoção / Tom")],
+    ["communicative_function", L("Communicative Function", "Função comunicativa")],
+    ["what_the_story_is_about_and_its_shape", L("What the story is about and its shape", "Sobre o que é a história e sua forma")],
+    ["where_and_when", L("Where and when", "Onde e quando")],
+    ["feeling_of_the_story", L("Feeling of the story", "Sentimento da história")],
+    ["why_being_told", L("Why being told", "Por que está sendo contada")],
   ];
   return candidates
-    .filter(([k]) => typeof L[k] === "string" && L[k].trim().length)
-    .map(([k, label]) => ({ label, text: L[k] }));
+    .filter(([k]) => typeof L1[k] === "string" && L1[k].trim().length)
+    .map(([k, label]) => ({ label, text: L1[k] }));
 }
 
 function sceneForProposition(propNum) {
@@ -583,7 +674,7 @@ function restoreSession() {
 }
 
 function resetSession() {
-  if (!confirm("Reset the session? Matches, tags, and notes will be cleared.")) return;
+  if (!confirm(L("Reset the session? Matches, tags, and notes will be cleared.", "Reiniciar a sessão? Combinações, marcações e notas serão apagadas."))) return;
   sessionStorage.removeItem(STORAGE_KEY);
   location.reload();
 }
@@ -697,15 +788,15 @@ function render() {
 function renderStoryStatus() {
   const parts = [];
   if (state.metadata.project_title) parts.push(`<strong>${escapeHtml(state.metadata.project_title)}</strong>`);
-  if (state.metadata.translation_language) parts.push(`Translation: ${escapeHtml(state.metadata.translation_language)}`);
-  if (state.metadata.location) parts.push(`Location: ${escapeHtml(state.metadata.location)}`);
-  if (state.metadata.organization) parts.push(`Organization: ${escapeHtml(state.metadata.organization)}`);
-  if (state.metadata.mentor_id) parts.push(`Mentor: ${escapeHtml(state.metadata.mentor_id)}`);
-  if (state.audioSource.filename) parts.push(`Audio: <span class="filename">${escapeHtml(state.audioSource.filename)}</span>`);
-  if (state.meaningMapFilename) parts.push(`Meaning map: <span class="filename">${escapeHtml(state.meaningMapFilename)}</span>`);
+  if (state.metadata.translation_language) parts.push(`${L("Translation", "Tradução")}: ${escapeHtml(state.metadata.translation_language)}`);
+  if (state.metadata.location) parts.push(`${L("Location", "Localidade")}: ${escapeHtml(state.metadata.location)}`);
+  if (state.metadata.organization) parts.push(`${L("Organization", "Organização")}: ${escapeHtml(state.metadata.organization)}`);
+  if (state.metadata.mentor_id) parts.push(`${L("Mentor", "Mentor")}: ${escapeHtml(state.metadata.mentor_id)}`);
+  if (state.audioSource.filename) parts.push(`${L("Audio", "Áudio")}: <span class="filename">${escapeHtml(state.audioSource.filename)}</span>`);
+  if (state.meaningMapFilename) parts.push(`${L("Meaning map", "Mapa de significado")}: <span class="filename">${escapeHtml(state.meaningMapFilename)}</span>`);
   dom.storyStatus.innerHTML = parts.length
     ? parts.map((p) => `<p>${p}</p>`).join("")
-    : `<p>Load a meaning map and the translation audio to begin.</p>`;
+    : `<p>${L("Load a meaning map and the translation audio to begin.", "Carregue um mapa de significado e o áudio da tradução para começar.")}</p>`;
 }
 
 function renderStepNav() {
@@ -719,10 +810,10 @@ function renderStepNav() {
     if (step.id === "match" || step.id === "sweep" || step.id === "key" || step.id === "review") disabled = !ready;
     return `
       <button type="button" data-action="step" data-step="${step.id}"
-              title="${escapeHtml(step.name)}"
+              title="${escapeHtml(stepName(step))}"
               ${isCurrent ? 'aria-current="step"' : ""}
               ${disabled ? "disabled" : ""}>
-        <span class="step-label">Step ${step.label}</span>
+        <span class="step-label">${L("Step", "Etapa")} ${step.label}</span>
       </button>`;
   }).join("");
 }
@@ -741,16 +832,17 @@ function renderAudioDock() {
   dom.playToggle.disabled = !hasAudio;
   dom.backward.disabled = !hasAudio;
   dom.forward.disabled = !hasAudio;
-  dom.audioTitle.textContent = state.audioSource.filename || "Choose a recording to begin.";
+  dom.audioTitle.textContent = state.audioSource.filename || L("Choose a recording to begin.", "Escolha um áudio para começar.");
   dom.durationLabel.textContent = fmtTime(state.audioSource.duration);
   dom.currentTimeLabel.textContent = fmtTime(dom.audioElement.currentTime || 0);
-  dom.playToggle.textContent = dom.audioElement.paused ? "Play" : "Pause";
+  dom.playToggle.textContent = dom.audioElement.paused ? L("Play", "Tocar") : L("Pause", "Pausar");
   renderGranularityControls();
   if (state.selection) {
     const a = state.beads[state.selection.start];
     const b = state.beads[state.selection.end];
     if (a && b) {
-      dom.rangeLabel.textContent = `Selection: beads ${state.selection.start + 1}–${state.selection.end + 1} (${fmtTime(a.startTime)}–${fmtTime(b.endTime)}).`;
+      const sel = `${state.selection.start + 1}–${state.selection.end + 1} (${fmtTime(a.startTime)}–${fmtTime(b.endTime)})`;
+      dom.rangeLabel.textContent = L(`Selection: beads ${sel}.`, `Seleção: contas ${sel}.`);
     }
   } else {
     dom.rangeLabel.textContent = "";
@@ -762,15 +854,16 @@ function renderGranularityControls() {
     dom.granularity.innerHTML = "";
     return;
   }
+  const granLabel = { coarse: L("coarse", "grossa"), medium: L("medium", "média"), fine: L("fine", "fina") };
   dom.granularity.innerHTML = `
     <div class="control-group">
-      <label for="granSelect">Bead granularity</label>
+      <label for="granSelect">${L("Bead granularity", "Granularidade das contas")}</label>
       <select id="granSelect">
-        ${["coarse", "medium", "fine"].map(g => `<option value="${g}" ${state.beadGranularity===g?"selected":""}>${g}</option>`).join("")}
+        ${["coarse", "medium", "fine"].map(g => `<option value="${g}" ${state.beadGranularity===g?"selected":""}>${granLabel[g]}</option>`).join("")}
       </select>
     </div>
     <div class="control-group">
-      <label>Beads: ${state.beads.length}</label>
+      <label>${L("Beads", "Contas")}: ${state.beads.length}</label>
     </div>
   `;
   dom.granularity.querySelector("#granSelect").addEventListener("change", (e) => {
@@ -860,43 +953,43 @@ function renderScreen() {
 
 function renderSetupScreen() {
   dom.screen.innerHTML = `
-    <h2 class="screen-title">Setup Your Verification Session</h2>
+    <h2 class="screen-title">${L("Setup Your Verification Session", "Configure sua sessão de verificação")}</h2>
     <div class="setup-grid">
       <div class="setup-card">
-        <h3>1 · Project info</h3>
-        <div class="field"><label>Project title</label>
+        <h3>${L("1 · Project info", "1 · Informações do projeto")}</h3>
+        <div class="field"><label>${L("Project title", "Título do projeto")}</label>
           <input type="text" data-field="project_title" value="${escapeHtml(state.metadata.project_title)}" /></div>
-        <div class="field"><label>Translation language</label>
+        <div class="field"><label>${L("Translation language", "Língua da tradução")}</label>
           <input type="text" data-field="translation_language" value="${escapeHtml(state.metadata.translation_language)}" /></div>
-        <div class="field"><label>Location</label>
+        <div class="field"><label>${L("Location", "Localidade")}</label>
           <input type="text" data-field="location" value="${escapeHtml(state.metadata.location || "")}" /></div>
-        <div class="field"><label>Organization</label>
+        <div class="field"><label>${L("Organization", "Organização")}</label>
           <input type="text" data-field="organization" value="${escapeHtml(state.metadata.organization || "")}" /></div>
-        <div class="field"><label>Mentor / consultant ID</label>
+        <div class="field"><label>${L("Mentor / consultant ID", "ID do mentor / consultor")}</label>
           <input type="text" data-field="mentor_id" value="${escapeHtml(state.metadata.mentor_id)}" /></div>
-        <div class="field"><label>Team members present</label>
-          <input type="text" data-field="team_present" placeholder="comma-separated" value="${escapeHtml(state.metadata.team_present)}" /></div>
+        <div class="field"><label>${L("Team members present", "Membros da equipe presentes")}</label>
+          <input type="text" data-field="team_present" placeholder="${L("comma-separated", "separados por vírgula")}" value="${escapeHtml(state.metadata.team_present)}" /></div>
       </div>
 
       <div class="setup-card">
-        <h3>2 · Meaning map (working language)</h3>
-        <p>Upload a consultant-approved meaning map for the passage in JSON format.</p>
+        <h3>${L("2 · Meaning map (working language)", "2 · Mapa de significado (idioma de trabalho)")}</h3>
+        <p>${L("Upload a consultant-approved meaning map for the passage in JSON format.", "Carregue um mapa de significado aprovado pelo consultor para a passagem em formato JSON.")}</p>
         <input type="file" accept="application/json,.json" data-action="upload-meaning-map" />
-        ${state.meaningMap ? `<p class="loaded-info">Loaded <span class="filename">${escapeHtml(state.meaningMapFilename)}</span> · ${state.meaningMap.length} propositions · ${state.checkablePoints.length} checkable points</p>` : ""}
+        ${state.meaningMap ? `<p class="loaded-info">${L("Loaded", "Carregado")} <span class="filename">${escapeHtml(state.meaningMapFilename)}</span> · ${state.meaningMap.length} ${L("propositions", "proposições")} · ${state.checkablePoints.length} ${L("checkable points", "pontos a verificar")}</p>` : ""}
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="ghost-button" type="button" data-action="load-demo-map">Load Esther 2:19–23 demo</button>
-          <button class="ghost-button" type="button" data-action="load-demo-map-jonah">Load Jonah 4:5–8 demo</button>
+          <button class="ghost-button" type="button" data-action="load-demo-map">${L("Load Esther 2:19–23 demo", "Carregar demo de Ester 2:19–23")}</button>
+          <button class="ghost-button" type="button" data-action="load-demo-map-jonah">${L("Load Jonah 4:5–8 demo", "Carregar demo de Jonas 4:5–8")}</button>
         </div>
       </div>
 
       <div class="setup-card">
-        <h3>3 · Translation audio</h3>
-        <p>Upload the OBT audio draft to be verified.</p>
+        <h3>${L("3 · Translation audio", "3 · Áudio da tradução")}</h3>
+        <p>${L("Upload the OBT audio draft to be verified.", "Carregue o rascunho do áudio OBT a ser verificado.")}</p>
         <input type="file" accept="audio/*" data-action="upload-audio" />
-        ${state.audioSource.filename ? `<p class="loaded-info">Loaded <span class="filename">${escapeHtml(state.audioSource.filename)}</span>${state.audioSource.duration ? ` · ${fmtTime(state.audioSource.duration)}` : ""}</p>` : ""}
+        ${state.audioSource.filename ? `<p class="loaded-info">${L("Loaded", "Carregado")} <span class="filename">${escapeHtml(state.audioSource.filename)}</span>${state.audioSource.duration ? ` · ${fmtTime(state.audioSource.duration)}` : ""}</p>` : ""}
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="ghost-button" type="button" data-action="load-demo-audio">Load Esther demo audio</button>
-          <button class="ghost-button" type="button" data-action="load-demo-audio-jonah">Load Jonah demo audio</button>
+          <button class="ghost-button" type="button" data-action="load-demo-audio">${L("Load Esther demo audio", "Carregar áudio demo de Ester")}</button>
+          <button class="ghost-button" type="button" data-action="load-demo-audio-jonah">${L("Load Jonah demo audio", "Carregar áudio demo de Jonas")}</button>
         </div>
       </div>
 
@@ -904,7 +997,7 @@ function renderSetupScreen() {
     <div class="screen-footer setup-footer">
       <span></span>
       <button class="primary-button" type="button" data-action="step" data-step="study"
-        ${state.meaningMap ? "" : "disabled"}>Continue to Study →</button>
+        ${state.meaningMap ? "" : "disabled"}>${L("Continue to Study →", "Continuar para Estudo →")}</button>
     </div>
   `;
 }
@@ -913,7 +1006,7 @@ function renderSetupScreen() {
 
 function renderStudyScreen() {
   if (!state.meaningMap) {
-    dom.screen.innerHTML = `<p>Load a meaning map on the Setup screen to begin studying.</p>`;
+    dom.screen.innerHTML = `<p>${L("Load a meaning map on the Setup screen to begin studying.", "Carregue um mapa de significado na tela de Configuração para começar a estudar.")}</p>`;
     return;
   }
   const range = passageRangeFromMap();
@@ -922,30 +1015,31 @@ function renderStudyScreen() {
     <div class="study-screen">
       <div class="study-toolbar">
         <div>
-          <h2 style="margin:0">Study the Meaning Map of the Passage</h2>
-          ${range ? `<p class="col-helper" style="margin:4px 0 0">Detected passage: <strong>${escapeHtml(range.display)}</strong></p>` : ""}
+          <h2 style="margin:0">${L("Study the Meaning Map of the Passage", "Estude o mapa de significado da passagem")}</h2>
+          ${range ? `<p class="col-helper" style="margin:4px 0 0">${L("Detected passage", "Passagem detectada")}: <strong>${escapeHtml(range.display)}</strong></p>` : ""}
         </div>
         <div class="study-actions">
-          ${url ? `<a href="${url}" target="_blank" rel="noopener">Open Bible Gateway in new tab</a>` : ""}
-          ${url ? `<button type="button" class="ghost-button" data-action="open-bible-side">Open in side window</button>` : ""}
+          ${url ? `<a href="${url}" target="_blank" rel="noopener">${L("Open Bible Gateway in new tab", "Abrir Bible Gateway em nova aba")}</a>` : ""}
+          ${url ? `<button type="button" class="ghost-button" data-action="open-bible-side">${L("Open in side window", "Abrir em janela lateral")}</button>` : ""}
         </div>
       </div>
       <p class="col-helper">
-        Before the verification session, the mentor should study the meaning map of the
-        passage carefully. Read it together with the Bible Gateway versions side by side —
-        use <em>Open in side window</em> for a smaller window you can place next to this one.
+        ${L(
+          "Before the verification session, the mentor should study the meaning map of the passage carefully. Read it together with the Bible Gateway versions side by side — use <em>Open in side window</em> for a smaller window you can place next to this one.",
+          "Antes da sessão de verificação, o mentor deve estudar com cuidado o mapa de significado da passagem. Leia-o junto com as versões do Bible Gateway lado a lado — use <em>Abrir em janela lateral</em> para uma janela menor que você pode colocar ao lado desta."
+        )}
       </p>
 
       <div class="study-layout study-layout-single">
         <div class="study-column">
-          <h3 class="study-section-head">Meaning map</h3>
+          <h3 class="study-section-head">${L("Meaning map", "Mapa de significado")}</h3>
           ${renderReadableMap()}
         </div>
       </div>
 
       <div class="screen-footer">
-        <button class="ghost-button" type="button" data-action="step" data-step="setup">← Back to Setup</button>
-        <button class="primary-button" type="button" data-action="step" data-step="whole">Continue to Whole Story →</button>
+        <button class="ghost-button" type="button" data-action="step" data-step="setup">${L("← Back to Setup", "← Voltar para Configuração")}</button>
+        <button class="primary-button" type="button" data-action="step" data-step="whole">${L("Continue to Whole Story →", "Continuar para Etapa 3 →")}</button>
       </div>
     </div>
   `;
@@ -959,7 +1053,7 @@ function renderReadableMap() {
   if (L1.length) {
     html += `
       <section class="level-section">
-        <h3 class="level-head"><span class="level-tag">Level 1</span> Whole story</h3>
+        <h3 class="level-head"><span class="level-tag">${L("Level 1", "Nível 1")}</span> ${L("Whole story", "História toda")}</h3>
         <dl class="level1-list">
           ${L1.map((row) => `
             <div class="level1-row">
@@ -976,19 +1070,19 @@ function renderReadableMap() {
   if (state.scenes.length) {
     html += `
       <section class="level-section">
-        <h3 class="level-head"><span class="level-tag">Level 2</span> Scenes</h3>
+        <h3 class="level-head"><span class="level-tag">${L("Level 2", "Nível 2")}</span> ${L("Scenes", "Cenas")}</h3>
         ${state.scenes.map((sc) => `
           <div class="study-scene-card">
             <div class="study-scene-head">
-              <span class="scene-badge">Scene ${sc.scene}</span>
+              <span class="scene-badge">${L("Scene", "Cena")} ${sc.scene}</span>
               ${sc.title ? `<strong>${escapeHtml(sc.title)}</strong>` : ""}
               ${sc.range ? `<span class="col-helper">${escapeHtml(sc.range)}</span>` : ""}
             </div>
             ${sc.summary ? `<p class="study-scene-summary">${escapeHtml(sc.summary)}</p>` : ""}
             ${(sc.people || []).length ? `
-              <details><summary>People (${sc.people.length})</summary>
+              <details><summary>${L("People", "Pessoas")} (${sc.people.length})</summary>
                 <table class="meaning-table">
-                  <thead><tr><th>Name</th><th>Role</th><th>Relationship</th><th>Wants</th><th>Carries</th></tr></thead>
+                  <thead><tr><th>${L("Name", "Nome")}</th><th>${L("Role", "Papel")}</th><th>${L("Relationship", "Relacionamento")}</th><th>${L("Wants", "Quer")}</th><th>${L("Carries", "Carrega")}</th></tr></thead>
                   <tbody>${sc.people.map((p) => `<tr>
                     <td><strong>${escapeHtml(p.name||"")}</strong></td>
                     <td>${escapeHtml(p.role||"")}</td>
@@ -998,9 +1092,9 @@ function renderReadableMap() {
                   </tr>`).join("")}</tbody>
                 </table></details>` : ""}
             ${(sc.places || []).length ? `
-              <details><summary>Places (${sc.places.length})</summary>
+              <details><summary>${L("Places", "Lugares")} (${sc.places.length})</summary>
                 <table class="meaning-table">
-                  <thead><tr><th>Name</th><th>Role</th><th>Type</th><th>Meaning</th><th>Effect on scene</th></tr></thead>
+                  <thead><tr><th>${L("Name", "Nome")}</th><th>${L("Role", "Papel")}</th><th>${L("Type", "Tipo")}</th><th>${L("Meaning", "Significado")}</th><th>${L("Effect on scene", "Efeito na cena")}</th></tr></thead>
                   <tbody>${sc.places.map((p) => `<tr>
                     <td><strong>${escapeHtml(p.name||"")}</strong></td>
                     <td>${escapeHtml(p.role||"")}</td>
@@ -1010,9 +1104,9 @@ function renderReadableMap() {
                   </tr>`).join("")}</tbody>
                 </table></details>` : ""}
             ${(sc.objects || []).length ? `
-              <details><summary>Objects and elements (${sc.objects.length})</summary>
+              <details><summary>${L("Objects and elements", "Objetos e elementos")} (${sc.objects.length})</summary>
                 <table class="meaning-table">
-                  <thead><tr><th>Name</th><th>What it is</th><th>Function in scene</th><th>Signals</th></tr></thead>
+                  <thead><tr><th>${L("Name", "Nome")}</th><th>${L("What it is", "O que é")}</th><th>${L("Function in scene", "Função na cena")}</th><th>${L("Signals", "Sinaliza")}</th></tr></thead>
                   <tbody>${sc.objects.map((o) => `<tr>
                     <td><strong>${escapeHtml(o.name||"")}</strong></td>
                     <td>${escapeHtml(o.what_it_is||"")}</td>
@@ -1020,10 +1114,10 @@ function renderReadableMap() {
                     <td>${escapeHtml(o.signals||"")}</td>
                   </tr>`).join("")}</tbody>
                 </table></details>` : ""}
-            ${sc.what_happens ? `<p><strong>What happens:</strong> ${escapeHtml(sc.what_happens)}</p>` : ""}
-            ${sc.communicative_purpose ? `<p><strong>Communicative purpose:</strong> ${escapeHtml(sc.communicative_purpose)}</p>` : ""}
-            ${sc.significant_absence ? `<div class="absence-strip"><strong>Significant absence:</strong> ${escapeHtml(sc.significant_absence)}</div>` : ""}
-            ${sc.propositions?.length ? `<p class="col-helper" style="margin:0">Propositions ${sc.propositions.join(", ")}</p>` : ""}
+            ${sc.what_happens ? `<p><strong>${L("What happens", "O que acontece")}:</strong> ${escapeHtml(sc.what_happens)}</p>` : ""}
+            ${sc.communicative_purpose ? `<p><strong>${L("Communicative purpose", "Propósito comunicativo")}:</strong> ${escapeHtml(sc.communicative_purpose)}</p>` : ""}
+            ${sc.significant_absence ? `<div class="absence-strip"><strong>${L("Significant absence", "Ausência significativa")}:</strong> ${escapeHtml(sc.significant_absence)}</div>` : ""}
+            ${sc.propositions?.length ? `<p class="col-helper" style="margin:0">${L("Propositions", "Proposições")} ${sc.propositions.join(", ")}</p>` : ""}
           </div>
         `).join("")}
       </section>
@@ -1033,7 +1127,7 @@ function renderReadableMap() {
   // Level 3 — propositions (full Q&A)
   html += `
     <section class="level-section">
-      <h3 class="level-head"><span class="level-tag">Level 3</span> Propositions</h3>
+      <h3 class="level-head"><span class="level-tag">${L("Level 3", "Nível 3")}</span> ${L("Propositions", "Proposições")}</h3>
       ${state.meaningMap.map(renderReadableProposition).join("")}
     </section>
   `;
@@ -1045,7 +1139,7 @@ function renderReadableProposition(p) {
     <div class="study-prop">
       <div class="study-prop-head">
         <span class="ref-badge">${escapeHtml(p.reference || "")}</span>
-        <span class="prop-num">Proposition ${p.proposition}</span>
+        <span class="prop-num">${L("Proposition", "Proposição")} ${p.proposition}</span>
         ${p.summary ? `<span class="prop-summary">— ${escapeHtml(p.summary)}</span>` : ""}
       </div>
       <dl class="study-qa">
@@ -1064,7 +1158,7 @@ function renderReadableProposition(p) {
 
 function renderWholeStoryScreen() {
   if (!state.meaningMap) {
-    dom.screen.innerHTML = `<p>Load a meaning map on the Setup screen to begin.</p>`;
+    dom.screen.innerHTML = `<p>${L("Load a meaning map on the Setup screen to begin.", "Carregue um mapa de significado na tela de Configuração para começar.")}</p>`;
     return;
   }
   const r = state.level1Review;
@@ -1072,45 +1166,45 @@ function renderWholeStoryScreen() {
     <div class="review-screen">
       <header class="review-screen-head">
         <div>
-          <h2 style="margin:0">Listen to the Audio Draft With the Team</h2>
+          <h2 style="margin:0">${L("Listen to the Audio Draft With the Team", "Ouça o rascunho de áudio com a equipe")}</h2>
           <p class="col-helper" style="margin:4px 0 0">
-            Play the whole audio with the team and listen together. Then walk through the
-            prompts below as conversation starters — let the team respond in their own
-            words. Take notes only if something they share or something in the audio
-            sounds off.
+            ${L(
+              "Play the whole audio with the team and listen together. Then walk through the prompts below as conversation starters — let the team respond in their own words. Take notes only if something they share or something in the audio sounds off.",
+              "Toque o áudio inteiro com a equipe e ouçam juntos. Depois passe pelas sugestões abaixo como ponto de partida da conversa — deixe a equipe responder com suas próprias palavras. Anote apenas se algo do que disserem ou algo no áudio soar fora do lugar."
+            )}
           </p>
         </div>
       </header>
 
       <section class="level-section">
-        <h3 class="level-head"><span class="level-tag">Prompts</span> Suggested conversation starters</h3>
+        <h3 class="level-head"><span class="level-tag">${L("Prompts", "Sugestões")}</span> ${L("Suggested conversation starters", "Pontos de partida sugeridos")}</h3>
         <ul class="prompt-list">
-          ${LEVEL1_PROMPTS.map((p) => `<li>${escapeHtml(p)}</li>`).join("")}
+          ${level1Prompts().map((p) => `<li>${escapeHtml(p)}</li>`).join("")}
         </ul>
         <p class="col-helper" style="margin:0">
-          These prompts are suggestions, not a form. Skip any that don't fit the conversation.
+          ${L("These prompts are suggestions, not a form. Skip any that don't fit the conversation.", "Estas sugestões são apenas guias, não um formulário. Pule as que não couberem na conversa.")}
         </p>
       </section>
 
       <section class="level-section">
-        <h3 class="level-head"><span class="level-tag">Session</span> Mentor notes</h3>
-        <p class="col-helper" style="margin:0">Capture what the team said. Write only what matters; skip the rest.</p>
-        <textarea class="big-textarea" data-action="l1-notes" placeholder="What did the team say about the whole passage?">${escapeHtml(r.notes)}</textarea>
+        <h3 class="level-head"><span class="level-tag">${L("Session", "Sessão")}</span> ${L("Mentor notes", "Notas do mentor")}</h3>
+        <p class="col-helper" style="margin:0">${L("Capture what the team said. Write only what matters; skip the rest.", "Capture o que a equipe disse. Anote só o que importa; pule o resto.")}</p>
+        <textarea class="big-textarea" data-action="l1-notes" placeholder="${L("What did the team say about the whole passage?", "O que a equipe disse sobre toda a passagem?")}">${escapeHtml(r.notes)}</textarea>
 
         <div class="revision-row">
-          <span class="col-helper">Does the whole-story rendering need revision?</span>
-          <label><input type="radio" name="l1-revision" value="none" ${r.revision==="none"?"checked":""} data-action="l1-revision"> None</label>
-          <label><input type="radio" name="l1-revision" value="minor" ${r.revision==="minor"?"checked":""} data-action="l1-revision"> Minor</label>
-          <label><input type="radio" name="l1-revision" value="major" ${r.revision==="major"?"checked":""} data-action="l1-revision"> Major</label>
+          <span class="col-helper">${L("Does the whole-story rendering need revision?", "A interpretação da história toda precisa de revisão?")}</span>
+          <label><input type="radio" name="l1-revision" value="none" ${r.revision==="none"?"checked":""} data-action="l1-revision"> ${L("None", "Nenhuma")}</label>
+          <label><input type="radio" name="l1-revision" value="minor" ${r.revision==="minor"?"checked":""} data-action="l1-revision"> ${L("Minor", "Pequena")}</label>
+          <label><input type="radio" name="l1-revision" value="major" ${r.revision==="major"?"checked":""} data-action="l1-revision"> ${L("Major", "Grande")}</label>
         </div>
         ${r.revision !== "none" ? `
-          <input type="text" class="full-input" data-action="l1-revision-comment" placeholder="What needs revising?" value="${escapeHtml(r.revision_comment)}" />
+          <input type="text" class="full-input" data-action="l1-revision-comment" placeholder="${L("What needs revising?", "O que precisa ser revisado?")}" value="${escapeHtml(r.revision_comment)}" />
         ` : ""}
       </section>
 
       <div class="screen-footer">
-        <button class="ghost-button" type="button" data-action="step" data-step="study">← Back to Study</button>
-        <button class="primary-button" type="button" data-action="step" data-step="scenes">Continue to Scenes →</button>
+        <button class="ghost-button" type="button" data-action="step" data-step="study">${L("← Back to Study", "← Voltar para Estudo")}</button>
+        <button class="primary-button" type="button" data-action="step" data-step="scenes">${L("Continue to Scenes →", "Continuar para Etapa 4 →")}</button>
       </div>
     </div>
   `;
@@ -1120,23 +1214,22 @@ function renderWholeStoryScreen() {
 
 function renderScenesReviewScreen() {
   if (!state.meaningMap) {
-    dom.screen.innerHTML = `<p>Load a meaning map on the Setup screen to begin.</p>`;
+    dom.screen.innerHTML = `<p>${L("Load a meaning map on the Setup screen to begin.", "Carregue um mapa de significado na tela de Configuração para começar.")}</p>`;
     return;
   }
   if (!state.scenes.length) {
     dom.screen.innerHTML = `
       <div class="review-screen">
-        <h2 style="margin:0">Scenes (Level 2)</h2>
-        <p class="col-helper">This meaning map has no scenes. You can skip ahead to <em>Match</em>.</p>
+        <h2 style="margin:0">${L("Scenes (Level 2)", "Cenas (Nível 2)")}</h2>
+        <p class="col-helper">${L("This meaning map has no scenes. You can skip ahead to <em>Match</em>.", "Este mapa de significado não tem cenas. Você pode pular direto para <em>Combinação</em>.")}</p>
         <div class="screen-footer">
-          <button class="ghost-button" type="button" data-action="step" data-step="whole">← Back to Whole story</button>
-          <button class="primary-button" type="button" data-action="step" data-step="match">Continue to Match →</button>
+          <button class="ghost-button" type="button" data-action="step" data-step="whole">${L("← Back to Whole story", "← Voltar para Etapa 3")}</button>
+          <button class="primary-button" type="button" data-action="step" data-step="match">${L("Continue to Match →", "Continuar para Combinação →")}</button>
         </div>
       </div>`;
     return;
   }
 
-  // Soft-warning helper for the footer
   const reviewed = state.scenes.filter((sc) => (state.level2Review[sc.scene]?.status || "pending") !== "pending").length;
   const total = state.scenes.length;
   const allReviewed = reviewed === total;
@@ -1145,16 +1238,16 @@ function renderScenesReviewScreen() {
     <div class="review-screen">
       <header class="review-screen-head">
         <div>
-          <h2 style="margin:0">Verify People, Places, Objects and Elements</h2>
+          <h2 style="margin:0">${L("Verify People, Places, Objects and Elements", "Verifique pessoas, lugares, objetos e elementos")}</h2>
           <p class="col-helper" style="margin:4px 0 0">
-            Play each scene's audio with the team. Ask them to listen carefully and to tell
-            you whenever they hear one of the people, places, objects, or elements listed
-            below — each time the team confirms hearing one, check its box. When the scene
-            has been worked through, mark its status; only write a note if something sounds off.
+            ${L(
+              "Play each scene's audio with the team. Ask them to listen carefully and to tell you whenever they hear one of the people, places, objects, or elements listed below — each time the team confirms hearing one, check its box. When the scene has been worked through, mark its status; only write a note if something sounds off.",
+              "Toque o áudio de cada cena com a equipe. Peça para ouvirem com atenção e dizerem sempre que ouvirem uma das pessoas, lugares, objetos ou elementos listados abaixo — cada vez que a equipe confirmar ter ouvido um, marque a caixa. Quando terminar a cena, marque o status; só escreva uma nota se algo soar fora do lugar."
+            )}
           </p>
         </div>
         <div class="scene-progress">
-          <strong>${reviewed}/${total}</strong> scenes reviewed
+          <strong>${reviewed}/${total}</strong> ${L("scenes reviewed", "cenas revisadas")}
         </div>
       </header>
 
@@ -1163,10 +1256,10 @@ function renderScenesReviewScreen() {
       ${state.scenes.map((sc) => renderSceneReviewCard(sc)).join("")}
 
       <div class="screen-footer">
-        <button class="ghost-button" type="button" data-action="step" data-step="whole">← Back to Whole story</button>
+        <button class="ghost-button" type="button" data-action="step" data-step="whole">${L("← Back to Whole story", "← Voltar para Etapa 3")}</button>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-          ${!allReviewed ? `<span class="col-helper">⚠ ${total - reviewed} scene(s) not yet marked. You can still continue.</span>` : ""}
-          <button class="primary-button" type="button" data-action="step" data-step="match">Continue to Match →</button>
+          ${!allReviewed ? `<span class="col-helper">${L(`⚠ ${total - reviewed} scene(s) not yet marked. You can still continue.`, `⚠ ${total - reviewed} cena(s) ainda não marcada(s). Você pode continuar mesmo assim.`)}</span>` : ""}
+          <button class="primary-button" type="button" data-action="step" data-step="match">${L("Continue to Match →", "Continuar para Combinação →")}</button>
         </div>
       </div>
     </div>
@@ -1175,21 +1268,20 @@ function renderScenesReviewScreen() {
 
 function renderMaquetteCard(stage) {
   const body = stage === "use"
-    ? `Now that the pieces are gathered, lay them out on the table as the team listens to
-       each part of the audio. Move them around as the action unfolds — let them stand in
-       for who is speaking, who is acting, and where the meaning is going. With the maquette
-       in front of you, the team can hear the translation, point at the pieces it refers to,
-       and you can tick the matching propositions on the right with confidence.`
-    : `Before you walk through the boxes below, gather whatever the team has at hand —
-       stones, beans, seeds, leaves, slips of paper, small carved figures — and assign one
-       piece to every person, place, object, or element listed in the scene. You will lay
-       the pieces out together as a maquette in the next step.`;
+    ? L(
+        `Now that the pieces are gathered, lay them out on the table as the team listens to each part of the audio. Move them around as the action unfolds — let them stand in for who is speaking, who is acting, and where the meaning is going. With the maquette in front of you, the team can hear the translation, point at the pieces it refers to, and you can tick the matching propositions on the right with confidence.`,
+        `Agora que as peças estão reunidas, coloque-as sobre a mesa enquanto a equipe ouve cada parte do áudio. Mova-as conforme a ação se desenrola — deixe-as representar quem está falando, quem está agindo e para onde o significado está indo. Com a maquete na sua frente, a equipe pode ouvir a tradução, apontar para as peças mencionadas, e você pode marcar as proposições correspondentes à direita com confiança.`
+      )
+    : L(
+        `Before you walk through the boxes below, gather whatever the team has at hand — stones, beans, seeds, leaves, slips of paper, small carved figures — and assign one piece to every person, place, object, or element listed in the scene. You will lay the pieces out together as a maquette in the next step.`,
+        `Antes de passar pelas caixas abaixo, reúnam o que a equipe tiver à mão — pedrinhas, feijões, sementes, folhas, pedaços de papel, pequenas figuras esculpidas — e atribuam uma peça a cada pessoa, lugar, objeto ou elemento listado na cena. Vocês vão dispor as peças juntos como uma maquete na próxima etapa.`
+      );
   return `
     <div class="maquette-card">
       <img class="maquette-art" src="./maquette.png"
-           alt="A collection of wooden discs, peg dolls, and brass keys arranged on a red cloth — props the team uses as a verification maquette." />
+           alt="${L("A collection of wooden discs, peg dolls, and brass keys arranged on a red cloth — props the team uses as a verification maquette.", "Uma coleção de discos de madeira, bonecas de pino e chaves de bronze sobre um pano vermelho — peças que a equipe usa como maquete de verificação.")}" />
       <div class="maquette-text">
-        <h3 style="margin:0">Verification maquette <span class="maquette-optional">(Optional but Recommended)</span></h3>
+        <h3 style="margin:0">${L("Verification maquette", "Maquete de verificação")} <span class="maquette-optional">${L("(Optional but Recommended)", "(Opcional mas Recomendado)")}</span></h3>
         <p style="margin:6px 0 0">${body}</p>
       </div>
     </div>
@@ -1241,37 +1333,37 @@ function renderSceneReviewCard(sc) {
   return `
     <div class="scene-review-card ${statusClass}">
       <header class="scene-review-head">
-        <span class="scene-badge">Scene ${sc.scene}</span>
+        <span class="scene-badge">${L("Scene", "Cena")} ${sc.scene}</span>
         ${sc.title ? `<strong>${escapeHtml(sc.title)}</strong>` : ""}
         ${sc.range ? `<span class="col-helper">${escapeHtml(sc.range)}</span>` : ""}
       </header>
 
-      ${people.length ? renderCheckList(sc.scene, "people", "People", people, checkCount("people", people)) : ""}
-      ${places.length ? renderCheckList(sc.scene, "places", "Places", places, checkCount("places", places)) : ""}
-      ${objects.length ? renderCheckList(sc.scene, "objects", "Objects and elements", objects, checkCount("objects", objects)) : ""}
+      ${people.length ? renderCheckList(sc.scene, "people", L("People", "Pessoas"), people, checkCount("people", people)) : ""}
+      ${places.length ? renderCheckList(sc.scene, "places", L("Places", "Lugares"), places, checkCount("places", places)) : ""}
+      ${objects.length ? renderCheckList(sc.scene, "objects", L("Objects and elements", "Objetos e elementos"), objects, checkCount("objects", objects)) : ""}
 
       ${sc.significant_absence ? `
         <div class="absence-strip">
-          <div><strong>Significant absence:</strong> ${escapeHtml(sc.significant_absence)}</div>
+          <div><strong>${L("Significant absence", "Ausência significativa")}:</strong> ${escapeHtml(sc.significant_absence)}</div>
           <label class="absence-confirm">
             <input type="checkbox" data-action="l2-absence" data-scene="${sc.scene}" ${r.absence_confirmed ? "checked" : ""} />
-            Confirmed: this absence is preserved (not added) in the translation
+            ${L("Confirmed: this absence is preserved (not added) in the translation", "Confirmado: esta ausência é preservada (não adicionada) na tradução")}
           </label>
           <input type="text" class="full-input" data-action="l2-absence-note" data-scene="${sc.scene}"
-                 placeholder="Optional note" value="${escapeHtml(r.absence_note || "")}" />
+                 placeholder="${L("Optional note", "Nota opcional")}" value="${escapeHtml(r.absence_note || "")}" />
         </div>
       ` : ""}
 
       <div class="status-row">
-        <span class="col-helper">Status:</span>
-        <label><input type="radio" name="status-${sc.scene}" value="ok" ${r.status==="ok"?"checked":""} data-action="l2-status" data-scene="${sc.scene}"> ✓ All present</label>
-        <label><input type="radio" name="status-${sc.scene}" value="off" ${r.status==="off"?"checked":""} data-action="l2-status" data-scene="${sc.scene}"> ⚠ Something off</label>
-        <label><input type="radio" name="status-${sc.scene}" value="pending" ${r.status==="pending"?"checked":""} data-action="l2-status" data-scene="${sc.scene}"> — Not yet reviewed</label>
+        <span class="col-helper">${L("Status", "Status")}:</span>
+        <label><input type="radio" name="status-${sc.scene}" value="ok" ${r.status==="ok"?"checked":""} data-action="l2-status" data-scene="${sc.scene}"> ${L("✓ All present", "✓ Tudo presente")}</label>
+        <label><input type="radio" name="status-${sc.scene}" value="off" ${r.status==="off"?"checked":""} data-action="l2-status" data-scene="${sc.scene}"> ${L("⚠ Something off", "⚠ Algo fora do lugar")}</label>
+        <label><input type="radio" name="status-${sc.scene}" value="pending" ${r.status==="pending"?"checked":""} data-action="l2-status" data-scene="${sc.scene}"> ${L("— Not yet reviewed", "— Ainda não revisado")}</label>
       </div>
 
       ${r.status === "off" ? `
         <textarea class="big-textarea" data-action="l2-note" data-scene="${sc.scene}"
-          placeholder="What sounds off in this scene?">${escapeHtml(r.note || "")}</textarea>
+          placeholder="${L("What sounds off in this scene?", "O que soa fora do lugar nesta cena?")}">${escapeHtml(r.note || "")}</textarea>
       ` : ""}
     </div>
   `;
@@ -1299,7 +1391,7 @@ function ensureFigureFlagReview(figure) {
 
 function renderKeyTermsScreen() {
   if (!state.meaningMap) {
-    dom.screen.innerHTML = `<p>Load a meaning map on the Setup screen to begin.</p>`;
+    dom.screen.innerHTML = `<p>${L("Load a meaning map on the Setup screen to begin.", "Carregue um mapa de significado na tela de Configuração para começar.")}</p>`;
     return;
   }
   const terms = state.conceptBank || [];
@@ -1308,30 +1400,33 @@ function renderKeyTermsScreen() {
     <div class="review-screen">
       <header class="review-screen-head">
         <div>
-          <h2 style="margin:0">Verify Key Terms</h2>
+          <h2 style="margin:0">${L("Verify Key Terms", "Verifique termos-chave")}</h2>
           <p class="col-helper" style="margin:4px 0 0">
-            Walk through each key term from the meaning map with the team. Confirm that the
-            chosen rendering carries the meaning faithfully. Mark a status; only write a note
-            if the rendering needs attention.
+            ${L(
+              "Walk through each key term from the meaning map with the team. Confirm that the chosen rendering carries the meaning faithfully. Mark a status; only write a note if the rendering needs attention.",
+              "Percorra com a equipe cada termo-chave do mapa de significado. Confirme se a tradução escolhida carrega o significado fielmente. Marque um status; só escreva uma nota se a tradução precisar de atenção."
+            )}
           </p>
         </div>
-        ${terms.length ? `<div class="scene-progress"><strong>${reviewed}/${terms.length}</strong> terms reviewed</div>` : ""}
+        ${terms.length ? `<div class="scene-progress"><strong>${reviewed}/${terms.length}</strong> ${L("terms reviewed", "termos revisados")}</div>` : ""}
       </header>
 
       ${terms.length === 0 ? `
         <p class="col-helper">
-          No key terms declared in this meaning map. You can still capture any terms the team
-          flagged in the notes below.
+          ${L(
+            "No key terms declared in this meaning map. You can still capture any terms the team flagged in the notes below.",
+            "Nenhum termo-chave declarado neste mapa de significado. Você ainda pode capturar nas notas abaixo qualquer termo que a equipe tenha sinalizado."
+          )}
         </p>
         <textarea class="big-textarea" data-action="key-terms-freenote"
-                  placeholder="Free-form notes about key terms in this passage">${escapeHtml(state.keyTermsReview.__freeNotes || "")}</textarea>
+                  placeholder="${L("Free-form notes about key terms in this passage", "Notas livres sobre termos-chave nesta passagem")}">${escapeHtml(state.keyTermsReview.__freeNotes || "")}</textarea>
       ` : terms.map((t) => renderKeyTermCard(t)).join("")}
 
       ${state.figureFlags?.length ? renderFigureFlagsSection() : ""}
 
       <div class="screen-footer">
-        <button class="ghost-button" type="button" data-action="step" data-step="sweep">← Back to Unmarked Beads</button>
-        <button class="primary-button" type="button" data-action="step" data-step="review">Continue to Report →</button>
+        <button class="ghost-button" type="button" data-action="step" data-step="sweep">${L("← Back to Unmarked Beads", "← Voltar para Contas não Marcadas")}</button>
+        <button class="primary-button" type="button" data-action="step" data-step="review">${L("Continue to Report →", "Continuar para Relatório →")}</button>
       </div>
     </div>
   `;
@@ -1340,11 +1435,12 @@ function renderKeyTermsScreen() {
 function renderFigureFlagsSection() {
   const flags = state.figureFlags || [];
   return `
-    <h3>Figure &amp; Idiom Flags</h3>
+    <h3>${L("Figure &amp; Idiom Flags", "Sinalizações de figuras e expressões")}</h3>
     <p class="col-helper" style="margin:0 0 var(--space-3)">
-      Idioms, images, and figures in the meaning map. Confirm with the team that the chosen
-      rendering carries the intended meaning. The "keep image" tag tells you how strongly
-      the source image should be preserved.
+      ${L(
+        `Idioms, images, and figures in the meaning map. Confirm with the team that the chosen rendering carries the intended meaning. The "keep image" tag tells you how strongly the source image should be preserved.`,
+        `Expressões idiomáticas, imagens e figuras do mapa de significado. Confirme com a equipe se a tradução escolhida carrega o significado pretendido. A etiqueta "manter imagem" indica o quão fortemente a imagem original deve ser preservada.`
+      )}
     </p>
     ${flags.map(renderFigureFlagCard).join("")}
   `;
@@ -1355,39 +1451,45 @@ function renderFigureFlagCard(f) {
   const statusClass = r.status === "ok" ? "is-ok" : r.status === "concern" ? "is-off" : "is-pending";
   const keep = (f.keep_image || "").toUpperCase();
   const keepClass = `keep-${keep.toLowerCase()}`;
+  const keepLabel = {
+    REQUIRED: L("REQUIRED", "OBRIGATÓRIO"),
+    PREFERRED: L("PREFERRED", "PREFERIDO"),
+    OPTIONAL: L("OPTIONAL", "OPCIONAL"),
+    AVOID: L("AVOID", "EVITAR"),
+  }[keep] || keep;
   return `
     <div class="figure-flag-card ${statusClass}">
       <header class="figure-flag-head">
         <strong>${escapeHtml(f.figure)}</strong>
-        ${keep ? `<span class="keep-image-badge ${keepClass}">${escapeHtml(keep)}</span>` : ""}
+        ${keep ? `<span class="keep-image-badge ${keepClass}">${escapeHtml(keepLabel)}</span>` : ""}
       </header>
       ${f.surface_image ? `
         <div class="figure-flag-row">
-          <dt>Surface image</dt>
+          <dt>${L("Surface image", "Imagem superficial")}</dt>
           <dd>${escapeHtml(f.surface_image)}</dd>
         </div>
       ` : ""}
       ${f.intended_meaning ? `
         <div class="figure-flag-row">
-          <dt>Intended meaning</dt>
+          <dt>${L("Intended meaning", "Significado pretendido")}</dt>
           <dd>${escapeHtml(f.intended_meaning)}</dd>
         </div>
       ` : ""}
       ${f.review_note ? `
         <div class="figure-flag-row">
-          <dt>Review note</dt>
+          <dt>${L("Review note", "Nota de revisão")}</dt>
           <dd>${escapeHtml(f.review_note)}</dd>
         </div>
       ` : ""}
       <div class="status-row">
-        <span class="col-helper">Rendering in the translation:</span>
-        <label><input type="radio" name="figureflag-${escapeHtml(f.figure)}" value="ok" ${r.status==="ok"?"checked":""} data-action="figure-flag-status" data-figure="${escapeHtml(f.figure)}"> ✓ Preserved</label>
-        <label><input type="radio" name="figureflag-${escapeHtml(f.figure)}" value="concern" ${r.status==="concern"?"checked":""} data-action="figure-flag-status" data-figure="${escapeHtml(f.figure)}"> ⚠ Needs attention</label>
-        <label><input type="radio" name="figureflag-${escapeHtml(f.figure)}" value="pending" ${r.status==="pending"?"checked":""} data-action="figure-flag-status" data-figure="${escapeHtml(f.figure)}"> — Not yet reviewed</label>
+        <span class="col-helper">${L("Rendering in the translation:", "Tradução escolhida:")}</span>
+        <label><input type="radio" name="figureflag-${escapeHtml(f.figure)}" value="ok" ${r.status==="ok"?"checked":""} data-action="figure-flag-status" data-figure="${escapeHtml(f.figure)}"> ${L("✓ Preserved", "✓ Preservado")}</label>
+        <label><input type="radio" name="figureflag-${escapeHtml(f.figure)}" value="concern" ${r.status==="concern"?"checked":""} data-action="figure-flag-status" data-figure="${escapeHtml(f.figure)}"> ${L("⚠ Needs attention", "⚠ Precisa de atenção")}</label>
+        <label><input type="radio" name="figureflag-${escapeHtml(f.figure)}" value="pending" ${r.status==="pending"?"checked":""} data-action="figure-flag-status" data-figure="${escapeHtml(f.figure)}"> ${L("— Not yet reviewed", "— Ainda não revisado")}</label>
       </div>
       ${r.status === "concern" ? `
         <textarea class="big-textarea" data-action="figure-flag-note" data-figure="${escapeHtml(f.figure)}"
-                  placeholder="What needs attention?">${escapeHtml(r.note || "")}</textarea>
+                  placeholder="${L("What needs attention?", "O que precisa de atenção?")}">${escapeHtml(r.note || "")}</textarea>
       ` : ""}
     </div>
   `;
@@ -1403,14 +1505,14 @@ function renderKeyTermCard(t) {
       </header>
       ${t.note ? `<p class="col-helper" style="margin:0">${escapeHtml(t.note)}</p>` : ""}
       <div class="status-row">
-        <span class="col-helper">Rendering in the translation:</span>
-        <label><input type="radio" name="keyterm-${escapeHtml(t.term)}" value="ok" ${r.status==="ok"?"checked":""} data-action="key-term-status" data-term="${escapeHtml(t.term)}"> ✓ Preserved</label>
-        <label><input type="radio" name="keyterm-${escapeHtml(t.term)}" value="concern" ${r.status==="concern"?"checked":""} data-action="key-term-status" data-term="${escapeHtml(t.term)}"> ⚠ Needs attention</label>
-        <label><input type="radio" name="keyterm-${escapeHtml(t.term)}" value="pending" ${r.status==="pending"?"checked":""} data-action="key-term-status" data-term="${escapeHtml(t.term)}"> — Not yet reviewed</label>
+        <span class="col-helper">${L("Rendering in the translation:", "Tradução escolhida:")}</span>
+        <label><input type="radio" name="keyterm-${escapeHtml(t.term)}" value="ok" ${r.status==="ok"?"checked":""} data-action="key-term-status" data-term="${escapeHtml(t.term)}"> ${L("✓ Preserved", "✓ Preservado")}</label>
+        <label><input type="radio" name="keyterm-${escapeHtml(t.term)}" value="concern" ${r.status==="concern"?"checked":""} data-action="key-term-status" data-term="${escapeHtml(t.term)}"> ${L("⚠ Needs attention", "⚠ Precisa de atenção")}</label>
+        <label><input type="radio" name="keyterm-${escapeHtml(t.term)}" value="pending" ${r.status==="pending"?"checked":""} data-action="key-term-status" data-term="${escapeHtml(t.term)}"> ${L("— Not yet reviewed", "— Ainda não revisado")}</label>
       </div>
       ${r.status === "concern" ? `
         <textarea class="big-textarea" data-action="key-term-note" data-term="${escapeHtml(t.term)}"
-                  placeholder="What needs attention?">${escapeHtml(r.note || "")}</textarea>
+                  placeholder="${L("What needs attention?", "O que precisa de atenção?")}">${escapeHtml(r.note || "")}</textarea>
       ` : ""}
     </div>
   `;
@@ -1420,42 +1522,42 @@ function renderKeyTermCard(t) {
 
 function renderMatchScreen() {
   dom.screen.innerHTML = `
-    <h2 class="screen-title">Match Audio to Meaning</h2>
+    <h2 class="screen-title">${L("Match Audio to Meaning", "Combine áudio com significado")}</h2>
     <p class="col-helper">
-      Play the audio bead by bead with the team. As they identify which proposition a bead
-      — or string of beads — carries, select those beads on the left and tick the matching
-      proposition on the right. The bead turns green when matched. The same beads can
-      match more than one proposition; languages often merge or spread meaning differently.
+      ${L(
+        "Play the audio bead by bead with the team. As they identify which proposition a bead — or string of beads — carries, select those beads on the left and tick the matching proposition on the right. The bead turns green when matched. The same beads can match more than one proposition; languages often merge or spread meaning differently.",
+        "Toque o áudio conta por conta com a equipe. Conforme eles identificam qual proposição uma conta — ou um conjunto de contas — carrega, selecione essas contas à esquerda e marque a proposição correspondente à direita. A conta fica verde quando combinada. As mesmas contas podem combinar com mais de uma proposição; cada idioma frequentemente funde ou espalha o significado de modo diferente."
+      )}
     </p>
     ${renderMaquetteCard("use")}
     <div class="work-layout">
       <div class="work-column" id="threadColumn">
-        <h2>Beads</h2>
+        <h2>${L("Beads", "Contas")}</h2>
         ${renderMatchGranularityControl()}
         ${renderLegend()}
         <div id="beadThread" class="bead-thread"></div>
         ${renderSelectionActions()}
       </div>
       <div class="work-column" id="mapColumn">
-        <h2>Propositions</h2>
+        <h2>${L("Propositions", "Proposições")}</h2>
         ${renderMapColumn()}
       </div>
       <div class="work-column" id="contextColumn">
-        <h2>Scenes</h2>
+        <h2>${L("Scenes", "Cenas")}</h2>
         ${renderScenesColumn()}
       </div>
     </div>
 
     <div class="screen-footer">
-      <button class="ghost-button" type="button" data-action="step" data-step="scenes">← Back to Scenes</button>
-      <button class="primary-button" type="button" data-action="step" data-step="sweep">Continue to Unmarked Beads →</button>
+      <button class="ghost-button" type="button" data-action="step" data-step="scenes">${L("← Back to Scenes", "← Voltar para Cenas")}</button>
+      <button class="primary-button" type="button" data-action="step" data-step="sweep">${L("Continue to Unmarked Beads →", "Continuar para Contas não Marcadas →")}</button>
     </div>
   `;
   renderBeadThread();
 }
 
 function renderMapColumn() {
-  if (!state.meaningMap) return "<p>No meaning map loaded.</p>";
+  if (!state.meaningMap) return `<p>${L("No meaning map loaded.", "Nenhum mapa de significado carregado.")}</p>`;
   const grouped = state.meaningMap.map((p) => {
     const propPoint = state.checkablePoints.find(
       (cp) => cp.level === "proposition" && cp.proposition === p.proposition
@@ -1515,23 +1617,24 @@ function renderPointRow(point, parentAnchored, isPropLevel, rollup) {
 
 function renderAnchorPill(link) {
   return `<span class="anchor-pill">
-    beads ${link.start_bead_index + 1}–${link.end_bead_index + 1}
-    <button type="button" data-action="play-link" data-link="${link.id}" title="Play this match">▶</button>
-    <button type="button" data-action="delete-link" data-link="${link.id}" title="Remove this match">×</button>
+    ${L("beads", "contas")} ${link.start_bead_index + 1}–${link.end_bead_index + 1}
+    <button type="button" data-action="play-link" data-link="${link.id}" title="${L("Play this match", "Tocar esta combinação")}">▶</button>
+    <button type="button" data-action="delete-link" data-link="${link.id}" title="${L("Remove this match", "Remover esta combinação")}">×</button>
   </span>`;
 }
 
 function renderMatchGranularityControl() {
   if (!state.beads.length) return "";
+  const granLabel = { coarse: L("coarse", "grossa"), medium: L("medium", "média"), fine: L("fine", "fina") };
   return `
     <div class="match-gran">
-      <label for="matchGranSelect">Bead granularity</label>
+      <label for="matchGranSelect">${L("Bead granularity", "Granularidade das contas")}</label>
       <select id="matchGranSelect" data-action="match-granularity">
         ${["coarse", "medium", "fine"]
-          .map((g) => `<option value="${g}" ${state.beadGranularity === g ? "selected" : ""}>${g}</option>`)
+          .map((g) => `<option value="${g}" ${state.beadGranularity === g ? "selected" : ""}>${granLabel[g]}</option>`)
           .join("")}
       </select>
-      <span class="col-helper">${state.beads.length} beads</span>
+      <span class="col-helper">${state.beads.length} ${L("beads", "contas")}</span>
     </div>
   `;
 }
@@ -1539,11 +1642,11 @@ function renderMatchGranularityControl() {
 function renderLegend() {
   return `
     <div class="legend">
-      <span class="legend-swatch covered"><span class="dot"></span> covered</span>
-      <span class="legend-swatch unclassified"><span class="dot"></span> unclassified</span>
-      <span class="legend-swatch framing"><span class="dot"></span> framing/repetition</span>
-      <span class="legend-swatch added"><span class="dot"></span> added meaning</span>
-      <span class="legend-swatch altered"><span class="dot"></span> altered</span>
+      <span class="legend-swatch covered"><span class="dot"></span> ${L("covered", "coberta")}</span>
+      <span class="legend-swatch unclassified"><span class="dot"></span> ${L("unclassified", "não classificada")}</span>
+      <span class="legend-swatch framing"><span class="dot"></span> ${L("framing/repetition", "enquadramento/repetição")}</span>
+      <span class="legend-swatch added"><span class="dot"></span> ${L("added meaning", "significado adicionado")}</span>
+      <span class="legend-swatch altered"><span class="dot"></span> ${L("altered", "alterada")}</span>
     </div>
   `;
 }
@@ -1571,7 +1674,10 @@ function renderSelectionActions() {
   if (!state.selection) {
     return `
       <div class="selection-actions">
-        <p class="col-helper" style="margin:0">Click a bead to start a selection. Shift-click another bead to extend it. Then tick the proposition(s) it carries.</p>
+        <p class="col-helper" style="margin:0">${L(
+          "Click a bead to start a selection. Shift-click another bead to extend it. Then tick the proposition(s) it carries.",
+          "Clique em uma conta para começar uma seleção. Shift-clique em outra para estender. Depois marque a(s) proposição(ões) que ela carrega."
+        )}</p>
       </div>`;
   }
   const a = state.beads[state.selection.start];
@@ -1579,17 +1685,17 @@ function renderSelectionActions() {
   return `
     <div class="selection-actions">
       <div class="row">
-        <strong>Selection:</strong>
-        beads ${state.selection.start + 1}–${state.selection.end + 1}
+        <strong>${L("Selection", "Seleção")}:</strong>
+        ${L("beads", "contas")} ${state.selection.start + 1}–${state.selection.end + 1}
         <span class="time-label">${fmtTime(a.startTime)}–${fmtTime(b.endTime)}</span>
-        <button class="small-button" type="button" data-action="play-selection">Play</button>
-        <button class="small-button" type="button" data-action="clear-selection">Clear</button>
+        <button class="small-button" type="button" data-action="play-selection">${L("Play", "Tocar")}</button>
+        <button class="small-button" type="button" data-action="clear-selection">${L("Clear", "Limpar")}</button>
       </div>
       <div class="row">
-        <button class="tag-pill-button is-framing" type="button" data-action="tag-selection" data-tag="framing">Tag as framing / repetition</button>
-        <button class="tag-pill-button is-added" type="button" data-action="tag-selection" data-tag="added">Tag as added meaning</button>
-        <button class="tag-pill-button is-altered" type="button" data-action="tag-selection" data-tag="altered">Tag as altered</button>
-        <button class="tag-pill-button" type="button" data-action="untag-selection">Clear tag</button>
+        <button class="tag-pill-button is-framing" type="button" data-action="tag-selection" data-tag="framing">${L("Tag as framing / repetition", "Marcar como enquadramento / repetição")}</button>
+        <button class="tag-pill-button is-added" type="button" data-action="tag-selection" data-tag="added">${L("Tag as added meaning", "Marcar como significado adicionado")}</button>
+        <button class="tag-pill-button is-altered" type="button" data-action="tag-selection" data-tag="altered">${L("Tag as altered", "Marcar como alterada")}</button>
+        <button class="tag-pill-button" type="button" data-action="untag-selection">${L("Clear tag", "Remover marcação")}</button>
       </div>
     </div>
   `;
@@ -1597,19 +1703,14 @@ function renderSelectionActions() {
 
 function renderScenesColumn() {
   if (!state.scenes.length) {
-    return `<p class="english-text empty">No scenes provided in the meaning map.</p>
-      <div class="english-empty-help">
-        Add a top-level <code>scenes</code> array to the meaning map (each scene with
-        <code>scene</code>, <code>title</code>, <code>summary</code>, and a
-        <code>propositions</code> list of proposition numbers) to enable this view.
-      </div>`;
+    return `<p class="english-text empty">${L("No scenes provided in the meaning map.", "Nenhuma cena fornecida no mapa de significado.")}</p>`;
   }
   return state.scenes.map((sc) => {
     const fullyMatched = sceneFullyMatched(sc.scene);
     return `
       <div class="scene-card ${fullyMatched ? "is-fully-matched" : ""}">
         <div class="scene-card-head">
-          <span class="scene-badge">Scene ${sc.scene}</span>
+          <span class="scene-badge">${L("Scene", "Cena")} ${sc.scene}</span>
           ${sc.title ? `<strong>${escapeHtml(sc.title)}</strong>` : ""}
         </div>
       </div>
@@ -1661,23 +1762,31 @@ function renderSweepScreen() {
   if (cur) runs.push(cur);
 
   const tagged = state.beadTags.length;
+  const tagLabel = (k) => ({
+    framing: L("Framing", "Enquadramento"),
+    added: L("Added", "Adicionado"),
+    altered: L("Altered", "Alterada"),
+  })[k] || k;
   dom.screen.innerHTML = `
-    <h2 style="margin-top:0">Check Unmarked Beads</h2>
-    <p class="col-helper">Every bead that was not linked to a checkable point appears below as a leftover run. Listen and tag each one as <em>framing/repetition</em> or <em>added meaning</em>. Existing tags are listed underneath.</p>
+    <h2 style="margin-top:0">${L("Check Unmarked Beads", "Verifique contas não marcadas")}</h2>
+    <p class="col-helper">${L(
+      "Every bead that was not linked to a checkable point appears below as a leftover run. Listen and tag each one as <em>framing/repetition</em> or <em>added meaning</em>. Existing tags are listed underneath.",
+      "Toda conta que não foi associada a um ponto a verificar aparece abaixo como uma sequência sobrante. Escute e marque cada uma como <em>enquadramento/repetição</em> ou <em>significado adicionado</em>. As marcações existentes aparecem listadas embaixo."
+    )}</p>
     <div class="sweep-list">
       ${runs.length === 0
-        ? `<p><strong>No unclassified beads remain.</strong> ${tagged ? "All leftovers have been tagged." : "Every bead is linked to at least one meaning point."}</p>`
+        ? `<p><strong>${L("No unclassified beads remain.", "Não há mais contas sem classificação.")}</strong> ${tagged ? L("All leftovers have been tagged.", "Todas as sobras foram marcadas.") : L("Every bead is linked to at least one meaning point.", "Toda conta está associada a pelo menos um ponto de significado.")}</p>`
         : runs.map((r) => {
             const a = state.beads[r.start];
             const b = state.beads[r.end];
             return `
               <div class="sweep-item">
-                <div><strong>Beads ${r.start + 1}–${r.end + 1}</strong> · ${fmtTime(a.startTime)}–${fmtTime(b.endTime)} (${(b.endTime - a.startTime).toFixed(1)}s)</div>
+                <div><strong>${L("Beads", "Contas")} ${r.start + 1}–${r.end + 1}</strong> · ${fmtTime(a.startTime)}–${fmtTime(b.endTime)} (${(b.endTime - a.startTime).toFixed(1)}s)</div>
                 <div class="row" style="display:flex;gap:8px;flex-wrap:wrap">
-                  <button class="small-button" type="button" data-action="sweep-play" data-start="${r.start}" data-end="${r.end}">Play</button>
-                  <button class="tag-pill-button is-framing" type="button" data-action="sweep-tag" data-start="${r.start}" data-end="${r.end}" data-tag="framing">Framing / repetition</button>
-                  <button class="tag-pill-button is-added" type="button" data-action="sweep-tag" data-start="${r.start}" data-end="${r.end}" data-tag="added">Added meaning</button>
-                  <button class="tag-pill-button is-altered" type="button" data-action="sweep-tag" data-start="${r.start}" data-end="${r.end}" data-tag="altered">Altered</button>
+                  <button class="small-button" type="button" data-action="sweep-play" data-start="${r.start}" data-end="${r.end}">${L("Play", "Tocar")}</button>
+                  <button class="tag-pill-button is-framing" type="button" data-action="sweep-tag" data-start="${r.start}" data-end="${r.end}" data-tag="framing">${L("Framing / repetition", "Enquadramento / repetição")}</button>
+                  <button class="tag-pill-button is-added" type="button" data-action="sweep-tag" data-start="${r.start}" data-end="${r.end}" data-tag="added">${L("Added meaning", "Significado adicionado")}</button>
+                  <button class="tag-pill-button is-altered" type="button" data-action="sweep-tag" data-start="${r.start}" data-end="${r.end}" data-tag="altered">${L("Altered", "Alterada")}</button>
                 </div>
               </div>
             `;
@@ -1686,24 +1795,24 @@ function renderSweepScreen() {
     </div>
 
     ${state.beadTags.length ? `
-      <h3 style="margin-top:20px">Tagged leftovers</h3>
+      <h3 style="margin-top:20px">${L("Tagged leftovers", "Sobras marcadas")}</h3>
       <div class="sweep-list">
         ${state.beadTags.map((t) => `
           <div class="sweep-item">
-            <div><strong>${({framing:"Framing", added:"Added", altered:"Altered"})[t.tag] || t.tag}</strong> · beads ${t.start_bead_index + 1}–${t.end_bead_index + 1}</div>
+            <div><strong>${tagLabel(t.tag)}</strong> · ${L("beads", "contas")} ${t.start_bead_index + 1}–${t.end_bead_index + 1}</div>
             <div class="row" style="display:flex;gap:8px;flex-wrap:wrap">
-              <button class="small-button" type="button" data-action="sweep-play" data-start="${t.start_bead_index}" data-end="${t.end_bead_index}">Play</button>
-              <button class="ghost-button" type="button" data-action="delete-tag" data-tag-id="${t.id}">Remove tag</button>
+              <button class="small-button" type="button" data-action="sweep-play" data-start="${t.start_bead_index}" data-end="${t.end_bead_index}">${L("Play", "Tocar")}</button>
+              <button class="ghost-button" type="button" data-action="delete-tag" data-tag-id="${t.id}">${L("Remove tag", "Remover marcação")}</button>
             </div>
-            <textarea data-action="tag-note" data-tag-id="${t.id}" placeholder="Optional note">${escapeHtml(t.note || "")}</textarea>
+            <textarea data-action="tag-note" data-tag-id="${t.id}" placeholder="${L("Optional note", "Nota opcional")}">${escapeHtml(t.note || "")}</textarea>
           </div>
         `).join("")}
       </div>
     ` : ""}
 
     <div class="screen-footer">
-      <button class="ghost-button" type="button" data-action="step" data-step="match">← Back to Match</button>
-      <button class="primary-button" type="button" data-action="step" data-step="key">Continue to Key Terms →</button>
+      <button class="ghost-button" type="button" data-action="step" data-step="match">${L("← Back to Match", "← Voltar para Combinação")}</button>
+      <button class="primary-button" type="button" data-action="step" data-step="key">${L("Continue to Key Terms →", "Continuar para Termos-chave →")}</button>
     </div>
   `;
 }
@@ -1731,42 +1840,42 @@ function renderReviewScreen() {
   });
 
   dom.screen.innerHTML = `
-    <h2 style="margin-top:0">Write Your Report</h2>
+    <h2 style="margin-top:0">${L("Write Your Report", "Escreva seu relatório")}</h2>
     <div class="summary-content">
       <div class="stat-row">
-        <div class="stat"><strong>${anchoredChildren}/${childPoints.length}</strong><span>checkable points matched</span></div>
-        <div class="stat"><strong>${beadsCovered}</strong><span>beads covered</span></div>
-        <div class="stat"><strong>${beadsFraming}</strong><span>beads framing</span></div>
-        <div class="stat"><strong>${beadsAdded}</strong><span>beads added</span></div>
-        <div class="stat"><strong>${beadsAltered}</strong><span>beads altered</span></div>
-        <div class="stat"><strong>${beadsUnclassified}</strong><span>beads unclassified</span></div>
+        <div class="stat"><strong>${anchoredChildren}/${childPoints.length}</strong><span>${L("checkable points matched", "pontos a verificar combinados")}</span></div>
+        <div class="stat"><strong>${beadsCovered}</strong><span>${L("beads covered", "contas cobertas")}</span></div>
+        <div class="stat"><strong>${beadsFraming}</strong><span>${L("beads framing", "contas enquadramento")}</span></div>
+        <div class="stat"><strong>${beadsAdded}</strong><span>${L("beads added", "contas adicionadas")}</span></div>
+        <div class="stat"><strong>${beadsAltered}</strong><span>${L("beads altered", "contas alteradas")}</span></div>
+        <div class="stat"><strong>${beadsUnclassified}</strong><span>${L("beads unclassified", "contas não classificadas")}</span></div>
       </div>
     </div>
 
     <div class="review-list">
       ${unanchored.length ? `
         <div class="review-item bad">
-          <strong>Map points without matches (${unanchored.length})</strong>
+          <strong>${L("Map points without matches", "Pontos do mapa sem combinação")} (${unanchored.length})</strong>
           <ul>${unanchored.map((u) => `<li>${escapeHtml(u.ref)} — ${escapeHtml(u.text)}</li>`).join("")}</ul>
-        </div>` : `<div class="review-item good"><strong>All checkable points are matched.</strong></div>`}
+        </div>` : `<div class="review-item good"><strong>${L("All checkable points are matched.", "Todos os pontos a verificar foram combinados.")}</strong></div>`}
 
-      ${beadsAdded ? `<div class="review-item bad"><strong>${beadsAdded} bead(s) tagged as added meaning</strong> — review notes below.</div>` : ""}
-      ${beadsAltered ? `<div class="review-item altered"><strong>${beadsAltered} bead(s) tagged as altered</strong> — review notes below.</div>` : ""}
-      ${beadsUnclassified ? `<div class="review-item warn"><strong>${beadsUnclassified} bead(s) still unclassified.</strong> Return to <em>Sweep leftovers</em> to tag or link them.</div>` : `<div class="review-item good"><strong>No unclassified beads remain.</strong></div>`}
+      ${beadsAdded ? `<div class="review-item bad"><strong>${beadsAdded} ${L("bead(s) tagged as added meaning", "conta(s) marcada(s) como significado adicionado")}</strong> — ${L("review notes below.", "veja as notas abaixo.")}</div>` : ""}
+      ${beadsAltered ? `<div class="review-item altered"><strong>${beadsAltered} ${L("bead(s) tagged as altered", "conta(s) marcada(s) como alterada(s)")}</strong> — ${L("review notes below.", "veja as notas abaixo.")}</div>` : ""}
+      ${beadsUnclassified ? `<div class="review-item warn"><strong>${beadsUnclassified} ${L("bead(s) still unclassified.", "conta(s) ainda sem classificação.")}</strong> ${L("Return to <em>Sweep leftovers</em> to tag or link them.", "Volte para <em>Verificar contas não marcadas</em> para marcá-las ou associá-las.")}</div>` : `<div class="review-item good"><strong>${L("No unclassified beads remain.", "Não há mais contas sem classificação.")}</strong></div>`}
     </div>
 
     <div class="setup-card" style="margin-top:16px">
-      <h3>Mentor overall note</h3>
+      <h3>${L("Mentor overall note", "Nota geral do mentor")}</h3>
       <textarea id="mentorOverallNote" rows="4" style="width:100%">${escapeHtml(state.mentorOverallNote)}</textarea>
     </div>
 
     <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
-      <button class="primary-button" type="button" data-action="export-json">Download JSON report</button>
-      <button class="ghost-button" type="button" data-action="export-html">Download printable HTML report</button>
+      <button class="primary-button" type="button" data-action="export-json">${L("Download JSON report", "Baixar relatório JSON")}</button>
+      <button class="ghost-button" type="button" data-action="export-html">${L("Download printable HTML report", "Baixar relatório HTML para impressão")}</button>
     </div>
 
     <div class="screen-footer">
-      <button class="ghost-button" type="button" data-action="step" data-step="key">← Back to Key Terms</button>
+      <button class="ghost-button" type="button" data-action="step" data-step="key">${L("← Back to Key Terms", "← Voltar para Termos-chave")}</button>
       <span></span>
     </div>
   `;
@@ -1779,6 +1888,13 @@ function renderReviewScreen() {
 // =============================================================================
 // Event handling
 // =============================================================================
+
+// Language toggle (sits outside the main data-action switch so it works even
+// when data-action handlers below are gated on state).
+document.addEventListener("click", (e) => {
+  const lt = e.target.closest("#langToggle [data-lang]");
+  if (lt) setLang(lt.dataset.lang);
+});
 
 document.addEventListener("click", async (e) => {
   const target = e.target.closest("[data-action]");
@@ -2100,7 +2216,7 @@ function handleBeadClick(beadIndex, shiftKey) {
 // gets its own independent link.
 function toggleMatchForPoint(pointId) {
   if (!state.selection) {
-    setBanner("warning", "Select beads on the thread first, then tick the proposition.");
+    setBanner("warning", L("Select beads on the thread first, then tick the proposition.", "Selecione contas no fio primeiro, depois marque a proposição."));
     return;
   }
   const sel = state.selection;
@@ -2129,7 +2245,7 @@ function toggleMatchForPoint(pointId) {
 
 function toggleMatchForScene(sceneNum) {
   if (!state.selection) {
-    setBanner("warning", "Select beads on the thread first, then tick the scene.");
+    setBanner("warning", L("Select beads on the thread first, then tick the scene.", "Selecione contas no fio primeiro, depois marque a cena."));
     return;
   }
   const ids = propLevelIdsInScene(sceneNum);
@@ -2208,10 +2324,13 @@ async function handleMeaningMapUpload(file) {
     state.meaningMapHash = await hashString(text);
     state.checkablePoints = deriveCheckablePoints(propositions);
     state.links = [];
-    setBanner("success", `Loaded meaning map: ${propositions.length} propositions${scenes.length ? `, ${scenes.length} scenes` : ""}${level1 ? ", with Level 1" : ""}${conceptBank.length ? `, ${conceptBank.length} key terms` : ""}${figureFlags.length ? `, ${figureFlags.length} figure flags` : ""}.`);
+    setBanner("success", L(
+      `Loaded meaning map: ${propositions.length} propositions${scenes.length ? `, ${scenes.length} scenes` : ""}${level1 ? ", with Level 1" : ""}${conceptBank.length ? `, ${conceptBank.length} key terms` : ""}${figureFlags.length ? `, ${figureFlags.length} figure flags` : ""}.`,
+      `Mapa de significado carregado: ${propositions.length} proposições${scenes.length ? `, ${scenes.length} cenas` : ""}${level1 ? ", com Nível 1" : ""}${conceptBank.length ? `, ${conceptBank.length} termos-chave` : ""}${figureFlags.length ? `, ${figureFlags.length} sinalizações de figura` : ""}.`
+    ));
     render();
   } catch (e) {
-    setBanner("warning", `Could not parse meaning map: ${e.message}`);
+    setBanner("warning", L(`Could not parse meaning map: ${e.message}`, `Não foi possível analisar o mapa de significado: ${e.message}`));
   }
 }
 
@@ -2232,10 +2351,10 @@ async function handleAcoustemesUpload(file) {
       buildBeads();
       rebaseLinksAndTagsToBeads();
     }
-    setBanner("success", `Loaded acoustemes with ${normalized.segments.length} segments.`);
+    setBanner("success", L(`Loaded acoustemes with ${normalized.segments.length} segments.`, `Acoustemes carregados com ${normalized.segments.length} segmentos.`));
     render();
   } catch (e) {
-    setBanner("warning", `Could not parse acoustemes: ${e.message}`);
+    setBanner("warning", L(`Could not parse acoustemes: ${e.message}`, `Não foi possível analisar acoustemes: ${e.message}`));
   }
 }
 
@@ -2269,19 +2388,28 @@ async function loadDemoMapFile(path, displayName) {
     state.meaningMapHash = await hashString(text);
     state.checkablePoints = deriveCheckablePoints(propositions);
     state.links = [];
-    setBanner("success", `Loaded demo meaning map (${propositions.length} propositions${scenes.length ? `, ${scenes.length} scenes` : ""}${level1 ? ", with Level 1" : ""}${conceptBank.length ? `, ${conceptBank.length} key terms` : ""}${figureFlags.length ? `, ${figureFlags.length} figure flags` : ""}).`);
+    setBanner("success", L(
+      `Loaded demo meaning map (${propositions.length} propositions${scenes.length ? `, ${scenes.length} scenes` : ""}${level1 ? ", with Level 1" : ""}${conceptBank.length ? `, ${conceptBank.length} key terms` : ""}${figureFlags.length ? `, ${figureFlags.length} figure flags` : ""}).`,
+      `Mapa de significado demo carregado (${propositions.length} proposições${scenes.length ? `, ${scenes.length} cenas` : ""}${level1 ? ", com Nível 1" : ""}${conceptBank.length ? `, ${conceptBank.length} termos-chave` : ""}${figureFlags.length ? `, ${figureFlags.length} sinalizações de figura` : ""}).`
+    ));
     render();
   } catch (e) {
-    setBanner("warning", `Demo map not found: ${e.message}`);
+    setBanner("warning", L(`Demo map not found: ${e.message}`, `Mapa demo não encontrado: ${e.message}`));
   }
 }
 
 async function loadDemoMap() {
-  return loadDemoMapFile("./demo/esther-2-19-23.meaning-map.json", "esther-2-19-23.meaning-map.json");
+  const isPt = CURRENT_LANG === "pt";
+  const path = isPt ? "./demo/ester-2-19-23.meaning-map.pt.json" : "./demo/esther-2-19-23.meaning-map.json";
+  const name = isPt ? "ester-2-19-23.meaning-map.pt.json" : "esther-2-19-23.meaning-map.json";
+  return loadDemoMapFile(path, name);
 }
 
 async function loadDemoMapJonah() {
-  return loadDemoMapFile("./demo/jonah-4-5-8.meaning-map.json", "jonah-4-5-8.meaning-map.json");
+  const isPt = CURRENT_LANG === "pt";
+  const path = isPt ? "./demo/jonas-4-5-8.meaning-map.pt.json" : "./demo/jonah-4-5-8.meaning-map.json";
+  const name = isPt ? "jonas-4-5-8.meaning-map.pt.json" : "jonah-4-5-8.meaning-map.json";
+  return loadDemoMapFile(path, name);
 }
 
 async function loadDemoAudioFile(path, displayName) {
@@ -2290,7 +2418,7 @@ async function loadDemoAudioFile(path, displayName) {
     const blob = await r.blob();
     attachAudio(new File([blob], displayName, { type: blob.type || "audio/mpeg" }));
   } catch (e) {
-    setBanner("warning", `Demo audio not found: ${e.message}`);
+    setBanner("warning", L(`Demo audio not found: ${e.message}`, `Áudio demo não encontrado: ${e.message}`));
   }
 }
 
@@ -2520,8 +2648,9 @@ function renderSummaryDialogContent() {
 // =============================================================================
 
 (function init() {
+  applyShellI18n();
   if (restoreSession()) {
-    setBanner("success", "Restored previous session.");
+    setBanner("success", L("Restored previous session.", "Sessão anterior restaurada."));
     setTimeout(() => { setBanner(null, ""); render(); }, 2000);
   }
   render();

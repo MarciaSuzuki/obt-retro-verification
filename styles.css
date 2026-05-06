@@ -150,6 +150,37 @@ select {
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
+/* Language toggle pill in the header — EN | PT */
+.lang-toggle {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.lang-toggle button {
+  background: transparent;
+  border: none;
+  padding: 6px 14px;
+  font-size: var(--type-small);
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.lang-toggle button:hover {
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+
+.lang-toggle button.is-active {
+  background: var(--ink);
+  color: var(--surface);
+}
+
 .ghost-button:hover {
   background: var(--surface-soft);
   border-color: var(--ink-soft);

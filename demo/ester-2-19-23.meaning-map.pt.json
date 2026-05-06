@@ -1,0 +1,266 @@
+{
+  "metadata": {
+    "map_id": "test_ester_2_19_23_v01_pt",
+    "source_type": "PASSAGEM_COLADA",
+    "bcv": "Ester 2:19-23",
+    "reliability_note": "Mapa produzido a partir do texto inglês colado (NIV). O hebraico não foi consultado. Para testes do STA Studio apenas."
+  },
+  "classification": {
+    "genre_group": "NARRATIVA",
+    "genre": "NARRATIVA_HISTORICA",
+    "register": "FORMAL_OFICIAL",
+    "local_register_shifts": "v.19-20 carregam um tom INTIMO / familiar (instrução do tutor, obediência continuada). v.21-23 ficam firmemente em registro corte-oficial.",
+    "suggested_tone": "contido, atento, procedimental",
+    "suggested_pace": "deliberado"
+  },
+  "level_1": {
+    "prose_arc": "A passagem move-se de um plano calmo de posicionamento para um perigo súbito e sua resolução veloz. O arco percorre ocultamento contínuo, lealdade escondida, ameaça ao rei, denúncia fiel, justiça pública e registro oficial. A carga é a fidelidade não reconhecida de duas figuras escondidas cuja própria invisibilidade é o que torna possível o resgate do rei. A preocupação é se a lealdade mantida nas sombras chegará ao trono a tempo e se será lembrada.",
+    "context": "O cenário é a corte real persa sob o rei Xerxes. Ester é rainha, mas sua identidade judaica permanece oculta pela ordem anterior do tutor. Mardoqueu está sentado à porta do rei, posição de acesso administrativo próximo do poder, enquanto dois guardas reais zelam pela soleira do rei. O leitor precisa saber que o silêncio de Ester é obediência e não engano, e que o serviço salvador de Mardoqueu aqui se tornará estruturalmente importante mais adiante no livro.",
+    "emotion_tone": "O tom dominante é contido e atento. A abertura é silenciosa, quase doméstica, em sua memória de uma filha ainda escutando o tutor. O meio se afia com raiva escondida e traição, e a denúncia é urgente mas contida. O fechamento é procedimental, com o peso reunindo-se em torno do que não é dito em voz alta — a identidade oculta de Ester, a lealdade não recompensada de Mardoqueu, o estreito escape do rei — em vez de qualquer emoção expressa.",
+    "communicative_function": "A passagem transmite uma memória comunitária e planta uma dívida que a narrativa maior depois exigirá que o rei pague. Registra uma vida salva, nomeia a fonte desse salvamento e lança o evento na memória real. Mostra também a fidelidade oculta operando dentro de um império que não sabe que está sendo servido. Falar a passagem ensaia o tempo providencial: a obediência silenciosa de um tutor, a voz tranquila de uma rainha, e uma crônica que ainda não conhece a própria importância."
+  },
+  "concept_bank": [
+    { "term": "Porta do rei", "note": "Posição administrativa e judicial; não meramente uma entrada. Precisa de tradução controlada para que o ouvinte entenda que Mardoqueu está em lugar de acesso, não de ócio." },
+    { "term": "Segunda reunião das virgens", "note": "Costume da corte cuja lógica interna não é explicada; precisará de tratamento controlado que não invente razões." },
+    { "term": "Família e nacionalidade (seu povo e parentela)", "note": "A identidade judaica de Ester; justamente o que é ocultado; carrega peso aliancial que a passagem não nomeia em voz alta." },
+    { "term": "Oficiais do rei / eunucos guardando a porta", "note": "Função do palácio persa; algumas traduções rendem como 'eunucos', outras como 'oficiais'; precisa de tradução controlada na língua-alvo." },
+    { "term": "Conspirar para tocar a mão no rei", "note": "Idioma bíblico em muitas fontes para assassinato; esta tradução diz 'assassinar' diretamente. Pode precisar de sinalização se a forma da língua-fonte for mais idiomática." },
+    { "term": "Empalar em postes / pendurar em uma árvore", "note": "Execução persa; tanto a imagem quanto seu significado precisam de tratamento controlado." },
+    { "term": "Livro das crônicas / anais", "note": "Instituição da memória real; é o mesmo registro que se torna estruturalmente importante em Ester 6." }
+  ],
+  "figure_flags": [
+    {
+      "figure": "Sentar à porta do rei",
+      "surface_image": "postura física em uma soleira",
+      "intended_meaning": "servir em posição real/administrativa com acesso a informação e julgamento",
+      "keep_image": "PREFERRED",
+      "review_note": "Muitas culturas-alvo precisarão de ajuda para entender que se trata de uma posição, não de estar ocioso."
+    },
+    {
+      "figure": "Em nome de Mardoqueu / dando crédito a Mardoqueu",
+      "surface_image": "falar por meio de um nome",
+      "intended_meaning": "atribuir a fonte da informação; deixar Mardoqueu registrado",
+      "keep_image": "OPTIONAL",
+      "review_note": "A língua-alvo pode ter sua própria forma de atribuição."
+    },
+    {
+      "figure": "Empalado em postes (ou pendurado em uma árvore)",
+      "surface_image": "corpos expostos em postes de madeira",
+      "intended_meaning": "execução capital sob a prática persa",
+      "keep_image": "PREFERRED",
+      "review_note": "Pode precisar de uma breve nota cultural para fazer sentido."
+    },
+    {
+      "figure": "Ficaram irados e conspiraram",
+      "surface_image": "uma virada de sentimento que produz um plano oculto",
+      "intended_meaning": "motivo sem causa específica; a passagem retém a razão",
+      "keep_image": "OPTIONAL",
+      "review_note": "Não inventar um motivo."
+    }
+  ],
+  "scenes": [
+    {
+      "scene": 1,
+      "title": "Cenário",
+      "range": "Ester 2:19-20",
+      "summary": "Mardoqueu é posicionado à porta do rei enquanto Ester continua a ocultar sua família e nacionalidade e a obedecer Mardoqueu como fazia quando ele a criou.",
+      "people": [
+        { "name": "Mardoqueu", "role": "posicionado à porta do rei", "relationship": "tutor adotivo de Ester e primo, judeu na corte persa", "wants": "permanecer próximo do poder e velar por Ester", "carries": "identidade judaica oculta, responsabilidade de tutor" },
+        { "name": "Ester", "role": "rainha que continua a obedecer ao tutor", "relationship": "rainha da Pérsia, filha adotiva e prima de Mardoqueu", "wants": "manter a identidade oculta como instruída", "carries": "identidade judaica oculta, lealdade dividida entre palácio e família" },
+        { "name": "As virgens", "role": "mulheres reunidas pela segunda vez", "relationship": "candidatas do processo anterior da corte, agora reunidas novamente", "wants": "não foregrounded", "carries": "presença que enquadra o tempo da cena" },
+        { "name": "Rei Xerxes (referenciado, não presente)", "role": "soberano em cuja corte ocorre a reunião", "relationship": "rei da Pérsia, marido de Ester", "wants": "não foregrounded aqui", "carries": "autoridade imperial que molda as condições do segredo" }
+      ],
+      "places": [
+        { "name": "Porta do rei", "role": "ponto de posicionamento de Mardoqueu", "type": "soleira administrativa do palácio", "meaning": "lugar de acesso, julgamento e negócios reais", "effect_on_scene": "coloca Mardoqueu perto da informação e da proteção" },
+        { "name": "Corte real (implícita)", "role": "cenário da reunião e da vida de Ester", "type": "residência imperial", "meaning": "sede estrangeira do poder", "effect_on_scene": "sustenta as condições de segredo que moldam a obediência de Ester" }
+      ],
+      "objects": [
+        { "name": "Segunda reunião das virgens", "what_it_is": "uma segunda assembleia de jovens na corte", "function_in_scene": "marcador de tempo para o posicionamento de Mardoqueu", "signals": "continuação de um procedimento da corte já estabelecido antes no livro" },
+        { "name": "Família e nacionalidade de Ester", "what_it_is": "seu povo e parentela judaica", "function_in_scene": "informação ativamente mantida em silêncio", "signals": "ocultamento contínuo por ordem" },
+        { "name": "Instrução anterior de Mardoqueu (referenciada)", "what_it_is": "instrução permanente dada a Ester", "function_in_scene": "fonte do comportamento continuado dela", "signals": "continuidade da autoridade da criação para a realeza" },
+        { "name": "Criação de Ester sob Mardoqueu (referenciada)", "what_it_is": "o período em que Mardoqueu a criou", "function_in_scene": "precedente que enquadra a obediência presente", "signals": "que o silêncio presente é parte de um hábito formado de longa data" }
+      ],
+      "what_happens": "Mardoqueu se senta à porta do rei enquanto Ester continua ocultando sua família e seu povo, como Mardoqueu havia instruído.",
+      "communicative_purpose": "Estabelece posições e ocultamento contínuo.",
+      "significant_absence": "Ninguém na corte sabe que Ester é judia.",
+      "propositions": [1, 2, 3]
+    },
+    {
+      "scene": 2,
+      "title": "A conspiração descoberta",
+      "range": "Ester 2:21-22",
+      "summary": "Dois oficiais reais irados, Bigtã e Teres, conspiram para assassinar o rei Xerxes. Mardoqueu descobre o plano, relata a Ester, e ela conta ao rei em nome de Mardoqueu.",
+      "people": [
+        { "name": "Mardoqueu", "role": "ainda posicionado à porta", "relationship": "parente da rainha, judeu desconhecido na corte", "wants": "permanecer atento", "carries": "identidade oculta, distância de escuta dos negócios da corte" },
+        { "name": "Bigtã", "role": "guarda de porta tornado conspirador", "relationship": "oficial do rei com acesso à soleira do rei", "wants": "fazer mal ao rei", "carries": "lealdade quebrada, posição de confiança" },
+        { "name": "Teres", "role": "guarda de porta tornado conspirador", "relationship": "oficial do rei com acesso à soleira do rei", "wants": "fazer mal ao rei", "carries": "lealdade quebrada, posição de confiança" },
+        { "name": "Rei Xerxes", "role": "alvo do plano", "relationship": "soberano que os conspiradores servem", "wants": "não foregrounded nesta cena", "carries": "vida imperial tornada vulnerável por servos de confiança" }
+      ],
+      "places": [
+        { "name": "Porta do rei", "role": "posto de escuta de Mardoqueu", "type": "soleira administrativa do palácio", "meaning": "lugar onde a informação passa", "effect_on_scene": "permite que Mardoqueu ouça a traição planejada" },
+        { "name": "Soleira (referenciada)", "role": "posto que os conspiradores guardavam", "type": "entrada protegida dos aposentos do rei", "meaning": "ponto de acesso cuja traição é a mais perigosa", "effect_on_scene": "explica como os conspiradores teriam oportunidade" }
+      ],
+      "objects": [
+        { "name": "Ira dos dois oficiais", "what_it_is": "uma queixa não declarada contra o rei", "function_in_scene": "motivo do plano", "signals": "que a lealdade dentro do palácio pode ser quebrada" },
+        { "name": "Conspiração / plano", "what_it_is": "um plano secreto para matar o rei", "function_in_scene": "a ameaça em torno da qual gira a passagem", "signals": "perigo oculto ao trono" }
+      ],
+      "what_happens": "Mardoqueu descobre o plano e o relata por meio de Ester, que conta ao rei e dá o crédito a Mardoqueu.",
+      "communicative_purpose": "Apresenta a traição oculta contra o rei e mostra a denúncia chegando ao rei.",
+      "propositions": [4, 5, 6, 7]
+    },
+    {
+      "scene": 3,
+      "title": "Justiça e registro",
+      "range": "Ester 2:23",
+      "summary": "O plano é investigado, confirmado, os dois oficiais são empalados em postes, e o evento é registrado nos anais reais na presença do rei.",
+      "people": [
+        { "name": "Rei Xerxes", "role": "autoridade que ordena investigação e punição", "relationship": "soberano cuja vida foi ameaçada", "wants": "verificar e responder à ameaça", "carries": "autoridade judicial" },
+        { "name": "Investigadores (implícitos, sem nome)", "role": "os que checam o relato", "relationship": "oficiais reais", "wants": "determinar a verdade do relato", "carries": "função judicial delegada" },
+        { "name": "Bigtã e Teres", "role": "conspiradores julgados", "relationship": "ex-oficiais do rei", "wants": "não foregrounded", "carries": "culpa, exposição" },
+        { "name": "Escriba real / cronista (implícito)", "role": "aquele que escreve o evento nos anais", "relationship": "oficial da corte", "wants": "lançar o evento na memória real", "carries": "responsabilidade pela memória oficial" },
+        { "name": "Mardoqueu (referenciado, não presente)", "role": "fonte da informação salvadora", "relationship": "tutor adotivo da rainha", "wants": "não foregrounded", "carries": "lealdade agora registrada mas ainda não recompensada" }
+      ],
+      "places": [
+        { "name": "Local de execução (implícito)", "role": "sítio do empalamento", "type": "espaço público de morte judicial", "meaning": "fim visível da traição", "effect_on_scene": "executa a justiça real à vista de todos" },
+        { "name": "Corte real (implícita)", "role": "lugar onde os anais são guardados e lidos", "type": "centro cerimonial do império", "meaning": "lugar da memória imperial", "effect_on_scene": "permite que o registro ocorra na presença do rei" },
+        { "name": "Livro das crônicas", "role": "depositório dos eventos registrados", "type": "crônica oficial", "meaning": "instrumento de guarda da memória do império", "effect_on_scene": "preserva o evento da vida salva para lembrança futura" }
+      ],
+      "objects": [
+        { "name": "Investigação", "what_it_is": "verificação da verdade do relato", "function_in_scene": "confirma o aviso", "signals": "devido processo dentro do império" },
+        { "name": "Postes para empalamento", "what_it_is": "instrumentos de punição capital", "function_in_scene": "meio de executar os conspiradores", "signals": "severidade da traição" },
+        { "name": "Livro das crônicas", "what_it_is": "crônica oficial real", "function_in_scene": "vaso que registra o evento", "signals": "memória que pode depois ser consultada" },
+        { "name": "Presença do rei no registro", "what_it_is": "o rei testemunhando o lançamento", "function_in_scene": "ancora o registro dentro da autoridade real", "signals": "que o evento da vida salva é parte do registro real" },
+        { "name": "Recompensa para Mardoqueu (ausente)", "what_it_is": "uma honra ou recompensa esperada após tal serviço", "function_in_scene": "não dada", "signals": "uma dívida não paga que a narrativa maior depois lembrará" }
+      ],
+      "what_happens": "O relato é investigado e confirmado; os dois oficiais são empalados, e o evento é registrado nos anais reais na presença do rei.",
+      "communicative_purpose": "Registra o evento da vida salva na memória real.",
+      "significant_absence": "Nenhuma recompensa é dada a Mardoqueu.",
+      "propositions": [8, 9, 10]
+    }
+  ],
+  "propositions": [
+    {
+      "proposition": 1,
+      "reference": "Ester 2:19",
+      "summary": "posicionamento",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "posicionamento"},
+        {"q": "Quem foi posicionado?", "a": "Mardoqueu"},
+        {"q": "Posicionado onde?", "a": "porta do rei"},
+        {"q": "Quando?", "a": "em uma segunda reunião"},
+        {"q": "Reunião de quem?", "a": "as virgens"},
+        {"q": "Qual reunião?", "a": "a segunda"}
+      ]
+    },
+    {
+      "proposition": 2,
+      "reference": "Ester 2:20a",
+      "summary": "ocultamento contínuo",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "ocultamento contínuo"},
+        {"q": "Quem ocultou?", "a": "Ester"},
+        {"q": "Ocultou o quê?", "a": "família"},
+        {"q": "Ocultou o que mais?", "a": "nacionalidade"},
+        {"q": "De acordo com o quê?", "a": "instrução anterior"},
+        {"q": "Quem instruiu?", "a": "Mardoqueu"},
+        {"q": "Quem foi instruída?", "a": "Ester"}
+      ]
+    },
+    {
+      "proposition": 3,
+      "reference": "Ester 2:20b",
+      "summary": "obediência contínua",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "obediência contínua"},
+        {"q": "Quem obedeceu?", "a": "Ester"},
+        {"q": "Obedeceu a quem?", "a": "Mardoqueu"},
+        {"q": "Obedeceu em quê?", "a": "as instruções dele"},
+        {"q": "Por quanto tempo?", "a": "como na criação"},
+        {"q": "Quem a criou?", "a": "Mardoqueu"}
+      ]
+    },
+    {
+      "proposition": 4,
+      "reference": "Ester 2:21",
+      "summary": "conspiração",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "conspiração"},
+        {"q": "Cenário temporal?", "a": "Mardoqueu ainda à porta"},
+        {"q": "Quem conspirou?", "a": "Bigtã"},
+        {"q": "Quem mais?", "a": "Teres"},
+        {"q": "Quantos?", "a": "dois"},
+        {"q": "Função deles?", "a": "oficiais do rei"},
+        {"q": "Posto deles?", "a": "guardas da soleira"},
+        {"q": "Estado deles?", "a": "irados"},
+        {"q": "Plano era qual?", "a": "assassinato"},
+        {"q": "De quem?", "a": "rei Xerxes"}
+      ]
+    },
+    {
+      "proposition": 5,
+      "reference": "Ester 2:22a",
+      "summary": "descoberta",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "descoberta"},
+        {"q": "Quem soube?", "a": "Mardoqueu"},
+        {"q": "Soube o quê?", "a": "o plano"}
+      ]
+    },
+    {
+      "proposition": 6,
+      "reference": "Ester 2:22b",
+      "summary": "denúncia",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "denúncia"},
+        {"q": "Quem denunciou?", "a": "Mardoqueu"},
+        {"q": "A quem?", "a": "rainha Ester"},
+        {"q": "Denunciou o quê?", "a": "o plano"}
+      ]
+    },
+    {
+      "proposition": 7,
+      "reference": "Ester 2:22c",
+      "summary": "denúncia adicional",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "denúncia adicional"},
+        {"q": "Quem denunciou?", "a": "Ester"},
+        {"q": "A quem?", "a": "o rei"},
+        {"q": "Denunciou o quê?", "a": "o plano"},
+        {"q": "Em nome de quem?", "a": "de Mardoqueu"}
+      ]
+    },
+    {
+      "proposition": 8,
+      "reference": "Ester 2:23a",
+      "summary": "investigação",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "investigação"},
+        {"q": "Investigou-se o quê?", "a": "o relato"},
+        {"q": "Com que resultado?", "a": "considerado verdadeiro"}
+      ]
+    },
+    {
+      "proposition": 9,
+      "reference": "Ester 2:23b",
+      "summary": "execução",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "execução"},
+        {"q": "Quem foi executado?", "a": "os dois oficiais"},
+        {"q": "Quantos?", "a": "dois"},
+        {"q": "Meio?", "a": "empalamento"},
+        {"q": "Em quê?", "a": "postes"}
+      ]
+    },
+    {
+      "proposition": 10,
+      "reference": "Ester 2:23c",
+      "summary": "registro",
+      "questions": [
+        {"q": "O que aconteceu?", "a": "registro"},
+        {"q": "Registrou-se o quê?", "a": "este evento"},
+        {"q": "Registrou-se onde?", "a": "livro das crônicas"},
+        {"q": "Na presença de quem?", "a": "do rei"}
+      ]
+    }
+  ]
+}
